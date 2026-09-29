@@ -80,6 +80,7 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [07-evaluation-and-skill-smells.md](07-evaluation-and-skill-smells.md): 평가 방법과 Skill smell 연구
 - [08-source-catalog.md](08-source-catalog.md): 1차 자료와 논문 목록
 - [09-book-outline.md](09-book-outline.md): 책 목차 후보
+- [10-anthropic-internal-skill-lessons.md](10-anthropic-internal-skill-lessons.md): Anthropic 내부 Skill 운영에서 추출한 작성 원칙
 
 ## 출처 우선순위
 
