@@ -17,7 +17,7 @@
 
 ## 파일
 
-- `variants.json`: A0 Broad, A1 Concise, A2 Boundary-Aware의 정확한 description
+- `variants.json`: A0 Broad, A1 Concise, A1L Length-Control, A2 Boundary-Aware의 정확한 description
 - `pilot-cases.json`: 20개 calibration prompt
 - full corpus 원본: `../../../instruction-files/18-trigger-eval-corpus.md`
 
@@ -34,7 +34,7 @@
 - 같은 prompt
 - 같은 available Skill set
 
-A0/A1/A2 사이에서 달라지는 것은 **description text만**이다.
+A0/A1/A1L/A2 사이에서 달라지는 것은 **description text만**이다.
 
 ## 파일럿 20개 구성
 
@@ -59,7 +59,7 @@ manual-only는 공통 variant에서 제외한다.
 
 ## 1차 실행 권장 순서
 
-1. A0/A1/A2 각각 20개 prompt를 1회 실행
+1. A0/A1/A1L/A2 각각 20개 prompt를 1회 실행
 2. routing trace가 정상 수집되는지 확인
 3. case label/harness 오류가 있으면 수정
 4. 수정 후 pilot version을 올리고 처음부터 재실행
@@ -110,3 +110,13 @@ manual-only는 공통 variant에서 제외한다.
 - scorer가 confusion matrix를 만들 수 있음
 
 이후 full run에서는 파일럿을 보고 수정한 prompt를 holdout으로 재사용하지 않는다.
+
+
+## Variant 비교 해석
+
+- **A0 vs A1**: 현실적인 broad/verbose → concise 개선 효과. 길이와 범위가 함께 달라지므로 원인 분리는 불가.
+- **A1 vs A1L**: 같은 routing 의미에서 description 길이와 비-routing detail 증가 효과.
+- **A0 vs A1L**: 길이가 비슷할 때 broad trigger surface와 narrow trigger surface 차이.
+- **A1 vs A2**: adjacent boundary 문장을 추가한 효과.
+
+이 네 비교를 분리해야 "짧아서 좋아졌다"와 "경계가 좋아져서 좋아졌다"를 혼동하지 않는다.
