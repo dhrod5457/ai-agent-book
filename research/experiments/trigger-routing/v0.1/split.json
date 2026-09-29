@@ -1,0 +1,212 @@
+{
+  "version": "0.1",
+  "seed": "ai-agent-book-trigger-v0.1",
+  "method": "stratified deterministic holdout by label using FNV-1a ordering",
+  "policy": {
+    "calibration": "20 fixed pilot cases; may be used to repair harness/grader and are never counted in final metrics",
+    "development": "44 cases; may be used for description iteration after calibration",
+    "holdout": "16 untouched cases; do not inspect during description tuning; final confirmatory evaluation only",
+    "holdout_quota": {
+      "feature": 3,
+      "bugfix": 3,
+      "refactor": 3,
+      "review": 3,
+      "none": 4
+    }
+  },
+  "source_blobs": {
+    "corpus_sha": "6f310a82f4765d8e200d285f01cb0a628e026678",
+    "pilot_cases_sha": "7fde6a317e17f816f0667f81897908caff4ae863",
+    "variants_sha": "9a0981c93a9b4a4aa3552fadd61941b0e743d58f"
+  },
+  "calibration": [
+    "EP-F01",
+    "EP-B01",
+    "EP-R01",
+    "EP-V01",
+    "IP-F01",
+    "IP-B01",
+    "IP-R01",
+    "IP-V01",
+    "NP-F01",
+    "NP-B01",
+    "NP-R01",
+    "NP-V01",
+    "RP-02",
+    "RP-07",
+    "RP-13",
+    "RP-19",
+    "RP-22",
+    "RP-24",
+    "NO-04",
+    "NO-12"
+  ],
+  "development": [
+    "EP-B02",
+    "EP-B03",
+    "EP-F02",
+    "EP-F03",
+    "EP-F04",
+    "EP-R02",
+    "EP-R03",
+    "EP-R04",
+    "EP-V02",
+    "EP-V03",
+    "IP-B02",
+    "IP-B03",
+    "IP-B04",
+    "IP-F02",
+    "IP-F03",
+    "IP-F04",
+    "IP-R02",
+    "IP-R03",
+    "IP-R04",
+    "IP-V04",
+    "NO-05",
+    "NO-07",
+    "NO-08",
+    "NO-09",
+    "NO-10",
+    "NO-11",
+    "NP-V02",
+    "NP-V03",
+    "RP-01",
+    "RP-03",
+    "RP-04",
+    "RP-05",
+    "RP-06",
+    "RP-10",
+    "RP-11",
+    "RP-12",
+    "RP-14",
+    "RP-15",
+    "RP-16",
+    "RP-17",
+    "RP-18",
+    "RP-20",
+    "RP-21",
+    "RP-23"
+  ],
+  "holdout": [
+    "NP-F03",
+    "NP-F02",
+    "RP-08",
+    "EP-B04",
+    "NP-B02",
+    "NP-B03",
+    "NP-R03",
+    "RP-09",
+    "NP-R02",
+    "EP-V04",
+    "IP-V02",
+    "IP-V03",
+    "NO-02",
+    "NO-03",
+    "NO-01",
+    "NO-06"
+  ],
+  "distributions": {
+    "full": {
+      "feature": 18,
+      "bugfix": 18,
+      "refactor": 18,
+      "review": 14,
+      "none": 12
+    },
+    "calibration": {
+      "feature": 4,
+      "bugfix": 5,
+      "refactor": 5,
+      "review": 4,
+      "none": 2
+    },
+    "development": {
+      "bugfix": 10,
+      "feature": 11,
+      "refactor": 10,
+      "review": 7,
+      "none": 6
+    },
+    "holdout": {
+      "feature": 3,
+      "bugfix": 3,
+      "refactor": 3,
+      "review": 3,
+      "none": 4
+    }
+  },
+  "variant_stats": {
+    "A0_broad": {
+      "feature": {
+        "chars": 231,
+        "whitespace_tokens": 49
+      },
+      "bugfix": {
+        "chars": 225,
+        "whitespace_tokens": 52
+      },
+      "refactor": {
+        "chars": 244,
+        "whitespace_tokens": 53
+      },
+      "review": {
+        "chars": 214,
+        "whitespace_tokens": 50
+      }
+    },
+    "A1_concise": {
+      "feature": {
+        "chars": 109,
+        "whitespace_tokens": 27
+      },
+      "bugfix": {
+        "chars": 83,
+        "whitespace_tokens": 20
+      },
+      "refactor": {
+        "chars": 68,
+        "whitespace_tokens": 16
+      },
+      "review": {
+        "chars": 66,
+        "whitespace_tokens": 16
+      }
+    },
+    "A2_boundary_aware": {
+      "feature": {
+        "chars": 176,
+        "whitespace_tokens": 41
+      },
+      "bugfix": {
+        "chars": 167,
+        "whitespace_tokens": 36
+      },
+      "refactor": {
+        "chars": 141,
+        "whitespace_tokens": 31
+      },
+      "review": {
+        "chars": 136,
+        "whitespace_tokens": 31
+      }
+    },
+    "A1L_length_control": {
+      "feature": {
+        "chars": 210,
+        "whitespace_tokens": 51
+      },
+      "bugfix": {
+        "chars": 197,
+        "whitespace_tokens": 48
+      },
+      "refactor": {
+        "chars": 180,
+        "whitespace_tokens": 44
+      },
+      "review": {
+        "chars": 172,
+        "whitespace_tokens": 41
+      }
+    }
+  }
+}
