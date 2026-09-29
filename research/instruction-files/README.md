@@ -97,6 +97,10 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [24-popular-skill-rule-matrix.md](24-popular-skill-rule-matrix.md): 대표 Skill 20개의 규칙 패턴 질적 비교 matrix
 - [25-official-vendor-skill-maintenance.md](25-official-vendor-skill-maintenance.md): Firebase·Expo·Supabase·Cloudflare·Firecrawl·Stitch의 최신성·eval 격리·router 압축 사례
 - [26-popular-skills-saturation-and-governance.md](26-popular-skills-saturation-and-governance.md): GitHub·Stripe·MongoDB·HashiCorp까지 확장한 governance 패턴과 자료 수집 포화점 판단
+- [27-corpus-ten-axis-reclassification.md](27-corpus-ten-axis-reclassification.md): 기존 35개 corpus를 Trigger~Maintenance 10축으로 재분류
+- [28-bad-good-refactoring-casebook.md](28-bad-good-refactoring-casebook.md): root bloat·broad trigger·state collision·stale CLI 등 bad→good composite 사례
+- [29-structural-validator-spec.md](29-structural-validator-spec.md): structural validator가 검사할 것과 semantic eval로 넘길 것의 경계
+- [30-instruction-review-checklist.md](30-instruction-review-checklist.md): CLAUDE/AGENTS/Rule/Skill/Hook 유형별 실전 리뷰 체크리스트
 - [../experiments/trigger-routing/v0.1/README.md](../experiments/trigger-routing/v0.1/README.md): trigger routing calibration pilot fixture
 - [../experiments/trigger-routing/v0.1/RUNBOOK.md](../experiments/trigger-routing/v0.1/RUNBOOK.md): host별 trigger pilot 실행 절차
 
