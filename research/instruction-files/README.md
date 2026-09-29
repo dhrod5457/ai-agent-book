@@ -84,6 +84,7 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [11-public-instruction-corpus.md](11-public-instruction-corpus.md): 공개 저장소 지침 파일 35개 1차 corpus
 - [12-observed-patterns-and-smells.md](12-observed-patterns-and-smells.md): corpus에서 관찰한 작성 패턴과 instruction smell
 - [13-real-world-validation-patterns.md](13-real-world-validation-patterns.md): 실제 저장소의 validator와 trigger eval 운영 방식
+- [14-real-world-hook-patterns.md](14-real-world-hook-patterns.md): 실제 저장소의 Hook enforcement 및 테스트 패턴
 
 ## 출처 우선순위
 
