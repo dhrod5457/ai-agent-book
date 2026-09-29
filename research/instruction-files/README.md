@@ -87,6 +87,9 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [14-real-world-hook-patterns.md](14-real-world-hook-patterns.md): 실제 저장소의 Hook enforcement 및 테스트 패턴
 - [15-instruction-debt-history.md](15-instruction-debt-history.md): 공개 저장소 commit history로 추적한 Instruction Debt
 - [16-nested-scope-case-studies.md](16-nested-scope-case-studies.md): nested AGENTS.md와 path scope 실제 사례
+- [17-experiment-protocol.md](17-experiment-protocol.md): Skill routing, scope, instruction debt 자체 실험 프로토콜
+- [18-trigger-eval-corpus.md](18-trigger-eval-corpus.md): feature/bugfix/refactor/review/none 80개 trigger corpus
+- [19-scope-eval-fixture.md](19-scope-eval-fixture.md): monolithic root vs nested/path-scoped instruction 비교 fixture 설계
 
 ## 출처 우선순위
 
