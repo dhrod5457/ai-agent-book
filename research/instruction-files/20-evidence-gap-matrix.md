@@ -344,3 +344,47 @@ skillhub 사례는 강하지만 특정 repository/model의 결과다.
 실험이 예상과 다르면 현재 원칙을 고친다.
 
 그게 이 책을 "지침 파일 모범답안 모음"이 아니라 검증 가능한 가이드로 만드는 핵심이다.
+
+
+## 자료 수집 포화점: 유명 Skill 추가 수집
+
+2026-09-30 기준 최근 3개월의 유명/공식 Skill 표본을 다음 범주까지 확장했다.
+
+- 방법론형: Superpowers, Matt Pocock, Addy Osmani, ECC, Ponytail
+- vendor framework: Anthropic, Vercel, Supabase, Cloudflare, Expo, Firebase
+- operational: Microsoft Azure, Prisma, Firecrawl, agent-browser, Remotion, Sentry
+- 추가 official-org: GitHub Awesome Copilot, Stripe, MongoDB, HashiCorp, Google Stitch
+
+새 표본을 추가할수록 완전히 새로운 authoring axis보다 다음 기존 축이 반복됐다.
+
+1. Trigger
+2. Boundary
+3. Preconditions
+4. State / authority
+5. Procedure
+6. Permission / side effect
+7. Evidence
+8. Handoff
+9. Freshness / canonical source
+10. Eval / maintenance
+
+따라서 단순히 "유명 Skill N개 더 수집"하는 작업의 추가 정보 가치는 낮아졌다.
+
+### 남은 가치가 높은 비실측 작업
+
+- 공개 corpus를 위 10개 축으로 재분류
+- 대표 bad → good refactor case 작성
+- structural validator 규칙 설계
+- 최근 commit-history 사례를 각 책 장에 배치
+- Skill review checklist를 실제 template로 만들기
+- vendor-neutral principle과 product syntax 표 분리
+
+### 여전히 실측이 필요한 공백
+
+- description variant routing 성능
+- cross-host routing consistency
+- root monolith vs scoped instruction
+- reference depth effect
+- model upgrade 전후 instruction removal effect
+
+사용자가 실측을 보류한 현재 단계에서는 **추가 수집보다 taxonomy와 집필 구조로 통합하는 작업이 우선**이다.
