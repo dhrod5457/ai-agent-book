@@ -627,3 +627,119 @@ URLs:
 - parent roll-up 금지
 - filesystem ownership과 instruction ownership 정렬
 - sidecar progressive disclosure
+
+
+## K. Cross-host Skill runtime / pilot adapter 공식 자료
+
+### Claude Code Skills
+
+URL:
+https://code.claude.com/docs/en/skills
+
+사용할 근거:
+
+- description 기반 자동 invocation
+- `/skill-name` 명시 호출
+- `disable-model-invocation: true`
+- manual-only일 때 description도 model context에서 제외
+- Skill body lifecycle
+- trigger와 output eval을 분리
+- `claude plugin eval` 및 skill-creator eval
+- nested project Skill loading
+
+### OpenAI / Codex Skill Evals
+
+URL:
+https://developers.openai.com/blog/eval-skills
+
+사용할 근거:
+
+- name/description이 primary selection signal
+- explicit / implicit / contextual / negative control
+- `$skill` / `/skills` explicit activation
+- `codex exec --json` JSONL trace
+- deterministic grader + rubric grader
+
+### OpenAI Skills Guide
+
+URL:
+https://developers.openai.com/api/docs/guides/tools-skills
+
+사용할 근거:
+
+- Skill discovery 시 name/description
+- full SKILL.md on selection
+- Agent Skills standard compatibility
+- skill instruction priority/runtime notes
+
+### Cursor Agent Skills
+
+URL:
+https://cursor.com/docs/skills
+
+사용할 근거:
+
+- automatic relevance-based Skill use
+- `/skill-name` manual use
+- `disable-model-invocation`
+- Skill `paths` scope
+- legacy `globs` fallback
+- Claude/Codex Skill directory compatibility
+
+### Cursor Hooks
+
+URL:
+https://cursor.com/docs/hooks
+
+사용할 근거:
+
+- agent lifecycle observability hooks
+- 현재 조사에서는 Skill-specific auto-activation event를 별도 확인하지 못함
+
+### Gemini CLI Agent Skills
+
+URL:
+https://geminicli.com/docs/cli/skills/
+
+사용할 근거:
+
+- discovery → activation → consent → injection → execution
+- startup name/description metadata
+- `activate_skill`
+- enabled/disabled Skill management
+
+### Gemini `activate_skill`
+
+URL:
+https://geminicli.com/docs/tools/activate-skill/
+
+사용할 근거:
+
+- tool argument로 Skill name이 노출됨
+- tool은 agent 전용
+- activation 관측 surface
+
+### GitHub Copilot CLI Skill reference
+
+URL:
+https://docs.github.com/en/copilot/reference/copilot-cli-reference/cli-command-reference
+
+사용할 근거:
+
+- auto invocation
+- `/SKILL-NAME`
+- `disable-model-invocation`
+- `user-invocable`
+- `copilot skill list --json`
+- Skill frontmatter limits
+
+### GitHub Copilot Skills how-to
+
+URL:
+https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills
+
+사용할 근거:
+
+- prompt + description 기반 선택
+- explicit invocation
+- enable/disable/reload workflow
