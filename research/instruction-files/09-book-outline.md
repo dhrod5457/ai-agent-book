@@ -89,6 +89,10 @@
 - negative boundary
 - 인접 Skill 간 overlap
 - description budget
+- concise하지만 trigger-rich한 description
+- negative applicability와 no-match/abstention
+- deprecated alias와 canonical router
+- Skill inventory collision
 
 ## 8장. Skill 본문을 실행 가능하게 쓰기
 
@@ -99,6 +103,10 @@
 - fallback
 - verification
 - output contract
+- precondition과 persistent workflow state
+- state owner와 허용된 transition
+- side-effect intent gate: prepare/preview와 deploy/render의 차이
+- stop / handoff / user approval
 - high/medium/low freedom
 - 과도한 recipe를 피하는 법
 
@@ -110,6 +118,10 @@
 - 큰 문서를 나누는 법
 - scripts가 prose보다 나은 경우
 - script contract
+- executable state-machine driver
+- cached CLI manual 대신 --help / generated schema
+- live official source vs installed-version-matched source
+- canonical source를 Skill에 복제하지 않는 법
 - 오류 출력과 재실행
 
 # Part 4. 자연어로 쓰지 말아야 할 규칙
@@ -125,6 +137,8 @@
 - Hook
 - permission
 - pstack Encode Lessons in Structure
+- Azure Validate: prose 9-step workflow → script-driven state machine
+- evaluator permission도 최소화해야 하는 이유
 
 ## 11장. Claude Code Hook 작성
 
@@ -223,6 +237,16 @@
 - conflict
 - non-actionable prose
 - vendor leakage
+- workflow ownership collision
+- unowned state transition
+- side-effect intent collapse
+- cached CLI manual
+- compatibility logic duplication
+- host-tolerated invalidity
+- eval skill collision
+- latest-version override
+- duplicated domain tokens
+- missing completion bound
 
 ## 18장. 모델이 바뀌면 지침도 다시 본다
 
@@ -247,6 +271,9 @@
 - human review
 - version note
 - removal condition
+- canonical source와 freshness strategy
+- candidate/installed Skill eval isolation
+- feedback → eval candidate → regression loop
 
 # Appendix
 
