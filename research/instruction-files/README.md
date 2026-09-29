@@ -92,6 +92,7 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [19-scope-eval-fixture.md](19-scope-eval-fixture.md): monolithic root vs nested/path-scoped instruction 비교 fixture 설계
 - [20-evidence-gap-matrix.md](20-evidence-gap-matrix.md): 책의 핵심 주장별 근거 수준과 남은 실험 공백
 - [21-cross-host-skill-pilot-adapters.md](21-cross-host-skill-pilot-adapters.md): Claude/Codex/Cursor/Gemini/Copilot Skill runtime·관측 차이
+- [22-popular-skills-rules-2026-q3.md](22-popular-skills-rules-2026-q3.md): 최근 3개월 유명 Skill 8개 저장소의 실제 규칙·변경 이력 비교
 - [../experiments/trigger-routing/v0.1/README.md](../experiments/trigger-routing/v0.1/README.md): trigger routing calibration pilot fixture
 - [../experiments/trigger-routing/v0.1/RUNBOOK.md](../experiments/trigger-routing/v0.1/RUNBOOK.md): host별 trigger pilot 실행 절차
 
