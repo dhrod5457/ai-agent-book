@@ -96,6 +96,7 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [23-operational-skill-rule-patterns.md](23-operational-skill-rule-patterns.md): 브라우저·배포·DB·리뷰·보안 등 업무형 Skill의 상태·권한·handoff 규칙
 - [24-popular-skill-rule-matrix.md](24-popular-skill-rule-matrix.md): 대표 Skill 20개의 규칙 패턴 질적 비교 matrix
 - [25-official-vendor-skill-maintenance.md](25-official-vendor-skill-maintenance.md): Firebase·Expo·Supabase·Cloudflare·Firecrawl·Stitch의 최신성·eval 격리·router 압축 사례
+- [26-popular-skills-saturation-and-governance.md](26-popular-skills-saturation-and-governance.md): GitHub·Stripe·MongoDB·HashiCorp까지 확장한 governance 패턴과 자료 수집 포화점 판단
 - [../experiments/trigger-routing/v0.1/README.md](../experiments/trigger-routing/v0.1/README.md): trigger routing calibration pilot fixture
 - [../experiments/trigger-routing/v0.1/RUNBOOK.md](../experiments/trigger-routing/v0.1/RUNBOOK.md): host별 trigger pilot 실행 절차
 
