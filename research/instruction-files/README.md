@@ -90,6 +90,7 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [17-experiment-protocol.md](17-experiment-protocol.md): Skill routing, scope, instruction debt 자체 실험 프로토콜
 - [18-trigger-eval-corpus.md](18-trigger-eval-corpus.md): feature/bugfix/refactor/review/none 80개 trigger corpus
 - [19-scope-eval-fixture.md](19-scope-eval-fixture.md): monolithic root vs nested/path-scoped instruction 비교 fixture 설계
+- [20-evidence-gap-matrix.md](20-evidence-gap-matrix.md): 책의 핵심 주장별 근거 수준과 남은 실험 공백
 
 ## 출처 우선순위
 
