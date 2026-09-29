@@ -81,6 +81,9 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [08-source-catalog.md](08-source-catalog.md): 1차 자료와 논문 목록
 - [09-book-outline.md](09-book-outline.md): 책 목차 후보
 - [10-anthropic-internal-skill-lessons.md](10-anthropic-internal-skill-lessons.md): Anthropic 내부 Skill 운영에서 추출한 작성 원칙
+- [11-public-instruction-corpus.md](11-public-instruction-corpus.md): 공개 저장소 지침 파일 35개 1차 corpus
+- [12-observed-patterns-and-smells.md](12-observed-patterns-and-smells.md): corpus에서 관찰한 작성 패턴과 instruction smell
+- [13-real-world-validation-patterns.md](13-real-world-validation-patterns.md): 실제 저장소의 validator와 trigger eval 운영 방식
 
 ## 출처 우선순위
 
