@@ -388,3 +388,68 @@ skillhub 사례는 강하지만 특정 repository/model의 결과다.
 - model upgrade 전후 instruction removal effect
 
 사용자가 실측을 보류한 현재 단계에서는 **추가 수집보다 taxonomy와 집필 구조로 통합하는 작업이 우선**이다.
+
+
+## 비실측 통합 작업 완료
+
+2026-09-30에 추가 수집 이후 우선순위로 잡았던 비실측 작업을 다음과 같이 진행했다.
+
+### 완료
+
+- **35개 공개 corpus 10축 재분류**
+  - Trigger
+  - Boundary
+  - Preconditions
+  - State / authority
+  - Procedure
+  - Side effect / permission
+  - Evidence
+  - Handoff
+  - Freshness
+  - Maintenance
+
+  결과: [27-corpus-ten-axis-reclassification.md](27-corpus-ten-axis-reclassification.md)
+
+- **bad → good composite refactor casebook**
+  - root bloat
+  - broad trigger
+  - state ownership collision
+  - cached CLI manual
+  - verification side effect
+  - prose-only safety gate
+  - compatibility duplication
+  - eval contamination
+  - latest-version override
+  - duplicated canonical tokens
+  - generic process duplication
+  - missing completion bound
+
+  결과: [28-bad-good-refactoring-casebook.md](28-bad-good-refactoring-casebook.md)
+
+- **structural validator 설계**
+  - structural fact만 ERROR/WARNING/INFO로 검사
+  - routing/output quality는 eval로 분리
+  - semantic lint overreach 금지
+
+  결과: [29-structural-validator-spec.md](29-structural-validator-spec.md)
+
+- **실전 review checklist**
+  - CLAUDE/AGENTS
+  - path Rule
+  - auto/manual Skill
+  - high-side-effect Skill
+  - validation/test Skill
+  - fast-moving API/CLI Skill
+  - Hook
+  - instruction-change PR
+
+  결과: [30-instruction-review-checklist.md](30-instruction-review-checklist.md)
+
+### 남은 비실측 우선 작업
+
+1. 책 각 장에 대표 real-world commit case를 배치
+2. vendor-neutral principle과 provider-specific syntax를 표로 분리
+3. Chapter 13 bad→good 사례를 하나의 end-to-end repository 구조로 확장
+4. validator spec을 실제 예제 config + expected diagnostics fixture로 보강
+
+실측이 재개되기 전까지는 위 네 작업의 가치가 추가 corpus 수집보다 높다.
