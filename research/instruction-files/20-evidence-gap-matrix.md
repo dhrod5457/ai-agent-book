@@ -195,13 +195,22 @@ Background:
 - Codex
 - Cursor
 - Gemini CLI
-- GitHub Copilot 지원 surface
+- GitHub Copilot CLI
 
 에서 실행했을 때 같은 routing pattern이 나오는가.
 
-현재 공식 지원 정보와 anecdotal 사례만 있고 직접 비교 결과가 없다.
+2026-09-30 공식 문서 비교로 **runtime semantics 차이와 adapter 요구사항은 정리했다**.
 
-**우선순위: 최고**
+확인된 차이:
+
+- Claude/Cursor/Copilot CLI: `disable-model-invocation` 지원
+- Gemini CLI: 모델의 `activate_skill` + 사용자 consent
+- Codex: structured eval trace는 강하지만 Claude식 manual-only field를 portable guarantee로 확인하지 못함
+- activation evidence surface가 host마다 다름
+
+남은 공백은 문서 조사보다 **실제 동일 corpus 실행 결과**다.
+
+**우선순위: 최고 — Phase A pilot 실행 필요**
 
 ## Gap 2. Root monolith vs scoped instruction의 실제 효과
 
