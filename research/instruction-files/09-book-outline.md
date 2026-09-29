@@ -168,6 +168,21 @@
 
 ## 13장. 나쁜 지침 파일 리팩터링
 
+[28-bad-good-refactoring-casebook.md](28-bad-good-refactoring-casebook.md)의 composite 사례를 기반으로 구성한다.
+
+핵심 리팩터링 사례:
+
+- 800줄 root instruction → root + nested + Rule + Skill + validator
+- broad auto-trigger Skill → positive/negative routing boundary
+- prepare/validate/deploy 단일 Skill → state authority 분리
+- cached CLI manual → runtime help/live source
+- prose-only safety gate → permission/Hook/test
+- deprecated Skill full copy → compatibility redirect
+- candidate Skill eval collision → isolated inventory
+- latest-doc override → project target + live source hierarchy
+- duplicated canonical config → source-of-truth lookup
+- missing completion bound → observable Done-when
+
 하나의 거대한 예제:
 
 - 800줄 CLAUDE.md
@@ -285,13 +300,21 @@
 
 ## D. SKILL.md 체크리스트
 
+[30-instruction-review-checklist.md](30-instruction-review-checklist.md)의 auto-trigger/manual-only/high-side-effect/fast-moving Skill 항목을 기반으로 한다.
+
 ## E. Hook 보안 체크리스트
+
+blocking/near-match/equivalent-bypass/target-semantics 검증 항목을 포함한다.
 
 ## F. Skill eval template
 
 ## G. 제품별 frontmatter reference
 
 ## H. 지침 파일 anti-pattern catalog
+
+## H-1. Structural Validator Rule Catalog
+
+[29-structural-validator-spec.md](29-structural-validator-spec.md)의 V001~V073 규칙을 참고하되 semantic quality를 hard lint로 판정하지 않는다.
 
 ## I. 연구 논문과 공식 문서 목록
 
