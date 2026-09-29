@@ -175,12 +175,17 @@
 
 ## 14장. Trigger Eval
 
+- description은 routing interface다
+- Trigger-Driven Development: Skill보다 eval case를 먼저 쓴다
 - explicit positive
 - implicit positive
 - noisy positive
 - adjacent negative
-- boundary case
-- precision/recall 관점
+- routing pair
+- none / abstention
+- manual-only와 auto-trigger의 다른 평가 기준
+- accuracy, macro-F1, false positive, collision error
+- 반복 실행과 run consistency
 
 ## 15장. Output Eval
 
@@ -198,9 +203,12 @@
 - baseline
 - current/proposed
 - judge bias
-- pstack eval 사례
+- deterministic grader와 semantic grader 분리
 - length-matched control
-- model별 비교
+- raw trace와 artifact 보존
+- root monolith vs nested AGENTS vs path rule
+- scope efficiency와 irrelevant-rule leakage
+- model/host/version별 비교
 
 # Part 7. 유지보수
 
@@ -219,10 +227,14 @@
 ## 18장. 모델이 바뀌면 지침도 다시 본다
 
 - OpenAI GPT-6 Astra 사례
+- 실제 Opus 5.5 Skill audit 사례
 - 오래된 handholding 제거
+- closing self-check와 broad trigger 재검토
 - 모델이 이미 하는 행동 삭제
 - overly strict boundary 완화 검토
+- safety gate overcorrection과 되돌림
 - 여러 모델을 쓰는 팀의 portable instruction
+- Host-Tolerated Invalidity
 
 ## 19장. 지침 파일 리뷰 프로세스
 
