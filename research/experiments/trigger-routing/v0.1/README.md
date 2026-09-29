@@ -13,7 +13,7 @@
 
 파일럿 결과를 보고 description, case, scorer, harness 중 하나라도 수정했다면 이 실행의 숫자는 폐기한다.
 
-최종 책 수치에는 untouched holdout을 사용한다.
+이 저장소 내부의 최종 확인에는 frozen confirmatory set을 사용한다. 다만 corpus 작성자가 전체 80개를 이미 작성·검토했으므로 이것은 진짜 blind holdout이 아니다. 출판 수준의 일반화에는 독립적으로 작성되거나 사전에 보지 않은 external holdout을 추가한다.
 
 ## 파일
 
@@ -120,3 +120,19 @@ manual-only는 공통 variant에서 제외한다.
 - **A1 vs A2**: adjacent boundary 문장을 추가한 효과.
 
 이 네 비교를 분리해야 "짧아서 좋아졌다"와 "경계가 좋아져서 좋아졌다"를 혼동하지 않는다.
+
+
+## Holdout 한계
+
+`split.json`의 16개는 **frozen confirmatory set**이다.
+
+- description iteration 중에는 사용하지 않는다.
+- 분할을 결과에 맞춰 다시 고르지 않는다.
+- 하지만 corpus 작성자가 전체 prompt를 이미 알고 있으므로 blind holdout이라고 부르지 않는다.
+
+책에서 강한 일반화 수치를 제시하려면 이후 다음 중 하나를 추가한다.
+
+1. 다른 사람이 독립적으로 작성한 prompt
+2. 공개 이슈/실제 사용자 요청에서 사후 샘플링한 prompt
+3. 실험 설계가 끝난 뒤 새로 확보한 unseen prompt
+
