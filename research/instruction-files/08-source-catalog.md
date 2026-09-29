@@ -422,3 +422,208 @@ https://arxiv.org/abs/2307.03172
 - AGENTS.md 공개 표준의 nested semantics와 제품별 차이
 - 실제 대규모 repository의 CLAUDE.md/AGENTS.md 사례 20~30개
 - 지침 파일 변경 전후 실제 coding task eval 데이터
+
+
+## I. 실제 변경 이력 / Instruction Debt 사례
+
+### duthaho/skillhub — Description diet + invocation audit
+
+URL:
+https://github.com/duthaho/skillhub/commit/429242bd4f6c05c5695a25720f7684da1b9e01ad
+
+사용할 근거:
+
+- near-limit description 축소
+- body detail과 trigger surface 분리
+- manual-only 전환
+- built-in collision validator
+- description soft limit
+- trigger eval surface가 실제 model-visible skill과 일치해야 함
+
+### duthaho/skillhub — Trigger-first Skill 추가
+
+URL:
+https://github.com/duthaho/skillhub/commit/fd6a387ac86e4f71ff1885480d3fd9e324b727ad
+
+사용할 근거:
+
+- Skill 구현 전 trigger eval case 추가
+- routing pair
+- description을 TDD 대상으로 취급
+
+### duthaho/skillhub — Validator CI gate
+
+URL:
+https://github.com/duthaho/skillhub/commit/f61a5d89ee4d5480da1b2acb888a1f167e000b0f
+
+사용할 근거:
+
+- structural validation을 PR gate로 승격
+- semantic/LLM eval은 별도 유지
+- registration drift를 CI에서 방지
+
+### getsentry/skills — Runtime instruction 축소
+
+URL:
+https://github.com/getsentry/skills/commit/412f2368ee3ec90ce042826b57533f080d531aaf
+
+사용할 근거:
+
+- commit Skill 178 → 62 lines
+- PR Writer 302 → 160 lines
+- runtime에 실제 판단에 필요한 내용만 남김
+- maintenance/spec/eval 책임 분리
+
+### getsentry/skills — AXIS eval 도입
+
+URL:
+https://github.com/getsentry/skills/commit/5a64b36c62d042d3981b7937d9d6ca7bd1753b9a
+
+사용할 근거:
+
+- 실제 Codex harness 기반 Skill eval
+- baseline/artifact/transcript
+- small-inline, reference-backed, bad-output iteration case
+
+### getsentry/skills — Skill-root-relative path 수정
+
+URL:
+https://github.com/getsentry/skills/commit/c81373583417504de2d3be1ae3d81977b11b2981
+
+사용할 근거:
+
+- provider path variable이 permission/runtime failure를 만든 사례
+- portable relative path
+
+### getsentry/skills — allowed-tools portability
+
+URL:
+https://github.com/getsentry/skills/commit/21af067ff3397fa35f5a0f22f05f6138d9e03307
+
+사용할 근거:
+
+- Claude에서는 허용되지만 공개 spec/다른 loader에서 깨지는 syntax
+- Host-Tolerated Invalidity
+
+### getsentry/skills — Runtime/SPEC 분리
+
+URL:
+https://github.com/getsentry/skills/commit/32fdf36273ac530120134ac484b3ab09717f3410
+
+사용할 근거:
+
+- runtime Skill 압축
+- scope/maintenance contract를 SPEC으로 분리
+
+### petekp/claude-code-setup — Opus 5.5 Skill audit
+
+URL:
+https://github.com/petekp/claude-code-setup/commit/0de2cbc2e9d2777743be990d6812b4d1820c3094
+
+사용할 근거:
+
+- model upgrade audit
+- closing self-check 제거
+- broad trigger wording 완화
+- prompt style leakage
+- 오래된 scaffolding 삭제
+
+### c-reichert/flowstate — plugin guidance audit
+
+URL:
+https://github.com/c-reichert/flowstate/commit/756a19ae9fcc44cc44b49329dae57273b23be250
+
+사용할 근거:
+
+- stale metadata
+- XML prompting guidance → Markdown
+- 중복 invocation gate 제거
+- trigger description 개선
+- non-standard frontmatter 정리
+
+### sfc-gh-eraigosa/dotfiles — Safety gate overcorrection
+
+URL:
+https://github.com/sfc-gh-eraigosa/dotfiles/commit/530d68bd0ee792884c85c58f5f528e39d354237d
+
+사용할 근거:
+
+- routine reversible action까지 막은 approval gate 제거
+- 실제 publish 위험 경계만 유지
+- alternate CLI bypass에 confirmation gate 추가
+
+### sfc-gh-eraigosa/dotfiles — Hook semantic drift
+
+URL:
+https://github.com/sfc-gh-eraigosa/dotfiles/commit/fe438db541a1d53f1b6bd45c5e4c48fed2c60674
+
+사용할 근거:
+
+- Hook target resolution과 실제 tool semantics 불일치
+- global flag 우회
+- false-green test harness
+- 실제 semantics와 Hook을 맞춘 regression test
+
+### petekp/claude-code-setup — Skill infrastructure doctor
+
+URL:
+https://github.com/petekp/claude-code-setup/commit/aa756fd543657d2fb80ce20b34af50d7958dc3e5
+
+사용할 근거:
+
+- self-parent symlink loop
+- content 외 instruction infrastructure health
+
+## J. Nested scope 실제 사례
+
+### sfc-gh-eraigosa/dotfiles
+
+URLs:
+- https://github.com/sfc-gh-eraigosa/dotfiles/blob/main/AGENTS.md
+- https://github.com/sfc-gh-eraigosa/dotfiles/blob/main/sdk/AGENTS.md
+- https://github.com/sfc-gh-eraigosa/dotfiles/blob/main/docker/AGENTS.md
+- https://github.com/sfc-gh-eraigosa/dotfiles/blob/main/ai/skills/AGENTS.md
+
+사용할 근거:
+
+- root → subtree → module progressive scope
+- Docker local invariant
+- Skill authoring local policy
+- AGENTS/CLAUDE symlink 기반 shared source
+
+### radio4000/r4-svelte
+
+URLs:
+- https://github.com/radio4000/r4-svelte/blob/main/AGENTS.md
+- https://github.com/radio4000/r4-svelte/blob/main/src/lib/components/AGENTS.md
+
+사용할 근거:
+
+- nearest nested instruction
+- local gotcha만 담는 매우 작은 AGENTS
+- 더 깊은 detail은 source header comment로 이동
+
+### pulumi/customer-managed-workflow-agent
+
+URLs:
+- https://github.com/pulumi/customer-managed-workflow-agent/blob/main/AGENTS.md
+- https://github.com/pulumi/customer-managed-workflow-agent/blob/main/kubernetes/AGENTS.md
+
+사용할 근거:
+
+- repository-wide restriction과 Kubernetes-specific convention 분리
+- parent-child 일부 중복 사례
+
+### BlackBeltTechnology/pi-agent-dashboard
+
+URLs:
+- https://github.com/BlackBeltTechnology/pi-agent-dashboard/blob/develop/AGENTS.md
+- https://github.com/BlackBeltTechnology/pi-agent-dashboard/blob/develop/openspec/specs/dox-directory-foldering/spec.md
+
+사용할 근거:
+
+- AGENTS size/row lint
+- byte cap과 row cap 분리
+- parent roll-up 금지
+- filesystem ownership과 instruction ownership 정렬
+- sidecar progressive disclosure
