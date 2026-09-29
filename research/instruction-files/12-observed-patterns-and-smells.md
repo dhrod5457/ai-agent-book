@@ -397,6 +397,122 @@ SKILL.md, marketplace, README, allowlist가 서로 다르다.
 
 Skill body는 상세하지만 trigger negative test가 없다.
 
+### S15. Workflow Ownership Collision
+
+둘 이상의 Skill이 같은 prompt와 같은 workflow state transition을 소유한다.
+
+실제 사례:
+
+- Prisma의 `prisma-orm-setup`과 `prisma-database-setup`이 version routing을 중복 소유했다가 2026-09-29 하나의 canonical owner로 통합됐다.
+
+### S16. Unowned State Transition
+
+workflow status를 바꿀 권한이 어느 Skill에도 명확히 귀속되지 않는다.
+
+고위험 결과:
+
+- 검증을 실행하지 않고 상태 문자열만 `Validated`로 바꾸는 우회가 가능해진다.
+
+Microsoft Azure Skills는 prepare / validate / deploy의 상태 ownership을 분리한다.
+
+### S17. Side-Effect Intent Collapse
+
+준비와 실행을 같은 trigger 강도로 취급한다.
+
+예:
+
+- preview = render로 오해
+- prepare = deploy로 오해
+- review = submit으로 오해
+- discover = install로 오해
+
+### S18. Stale Embedded Command Surface
+
+빠르게 바뀌는 CLI flag와 option catalog를 static SKILL.md에 복제한다.
+
+Firecrawl은 cached option table을 `<command> --help` pointer로 교체했고, agent-browser는 installed CLI가 version-matched Skill content를 제공한다.
+
+### S19. Compatibility Logic Duplication
+
+deprecated Skill이 replacement Skill과 같은 full workflow를 계속 보유한다.
+
+대응:
+
+```text
+old entrypoint
+→ tiny compatibility redirect
+→ canonical owner
+```
+
+### S20. Host-Tolerated Invalidity
+
+한 host가 비표준 metadata를 관대하게 받아줘 오류가 감춰지고 다른 loader에서 silent failure가 난다.
+
+실제 사례:
+
+- Sentry Skills의 comma-separated `allowed-tools`는 Claude에서는 동작했지만 다른 loader에서는 `Read,` 같은 이름이 invalid tool로 해석되어 capability가 빠졌다.
+
+### S21. Discovery Without Abstention
+
+router가 적합한 Skill이 없어도 무조건 무엇인가 선택한다.
+
+좋은 discovery Skill에는 `none`, fallback, direct-help path가 필요하다.
+
+### S22. User-Change Clobbering
+
+대화 밖에서 사용자가 변경한 파일을 agent가 예상 밖 변경이라는 이유로 덮어쓴다.
+
+Remotion Skill은 surprise change를 intentional user edit으로 우선 취급하거나 확인하도록 한다.
+
+### S23. Cached CLI Manual
+
+CLI documentation을 Skill에 장황하게 복제해 runtime help와 두 개의 truth를 만든다.
+
+S18과 비슷하지만 S23은 특히 **정식 CLI help surface가 이미 존재하는데도 이를 복제하는 유지보수 smell**이다.
+
+### S24. Eval Skill Collision
+
+candidate Skill과 이미 설치된 동명/동패키지 Skill이 동시에 discovery surface에 노출돼 evaluator가 잘못된 Skill을 측정한다.
+
+Expo의 trigger eval은 published plugin과 local plugin의 collision을 명시적으로 차단한다.
+
+### S25. Latest-Version Override
+
+현재 project의 configured target을 무시하고 최신 package/docs만 기준으로 기존 코드를 잘못 판정한다.
+
+Cloudflare는 installed versions, generated types, compatibility date를 baseline으로 두고 current docs를 검증 근거로 결합한다.
+
+### S26. Duplicated Domain Tokens
+
+machine-readable canonical source의 값을 Skill prompt에 다시 복제한다.
+
+예:
+
+- design system token + generation prompt의 색/폰트 중복
+- generated schema + 수동 schema 설명
+- CI threshold + prose threshold
+
+Google Stitch는 project design system이 theme를 소유하면 generation prompt에서 theme token을 다시 쓰지 않게 한다.
+
+### S27. Generic Process in Domain Skill
+
+특정 domain Skill이 일반 planning/review/debugging 절차까지 중복 소유한다.
+
+Cloudflare는 최근 Workers Skill에서 generic review procedure를 제거하고 Workers-specific anti-pattern과 retrieval rule만 남겼다.
+
+### S28. Unbounded Evaluator Permission
+
+Skill eval harness가 실제 평가에 필요하지 않은 global filesystem, config, shell 권한까지 가진다.
+
+Expo eval Skill은 temp/cache path와 특정 eval script로 allowed-tools를 좁힌다.
+
+### S29. Missing Completion Bound
+
+단계는 상세하지만 observable한 완료 조건이 없다.
+
+Firecrawl은 좁은 Skill마다 하나의 `Done when` 문장을 두는 방향으로 refactor했다.
+
+
 ## 19. 다음 실제 실험으로 연결할 항목
 
 Corpus를 더 늘리기 전에 아래 실험이 더 가치 있다.
