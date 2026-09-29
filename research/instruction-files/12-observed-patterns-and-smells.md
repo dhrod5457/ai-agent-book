@@ -512,6 +512,43 @@ Expo eval Skill은 temp/cache path와 특정 eval script로 allowed-tools를 좁
 
 Firecrawl은 좁은 Skill마다 하나의 `Done when` 문장을 두는 방향으로 refactor했다.
 
+### S30. Self-Modifying Review Policy
+
+검토 대상 PR이 reviewer가 읽는 instruction/policy 자체를 같은 변경에서 약화할 수 있다.
+
+GitHub Awesome Copilot의 repository review Skill은 review-policy file 변경을 security-sensitive governance change로 별도 취급한다.
+
+### S31. Undated Fallback Snapshot
+
+fallback version/snapshot은 있지만 생성일, 예상 freshness interval, canonical live source, stale 시 행동이 정의되지 않는다.
+
+Stripe upgrade Skill은 live lookup을 우선하고 bundled fallback에 생성 시점과 stale 가능성을 명시한다.
+
+### S32. Context-Free Magic Number
+
+application context나 measurement 없이 pool size, timeout, coverage, threshold 같은 숫자를 universal recommendation으로 쓴다.
+
+MongoDB connection Skill은 deployment/workload/concurrency/topology를 먼저 확인하도록 한다.
+
+### S33. Verification Side-Effect Blindness
+
+test/validation을 read-only 검증이라고 가정해 비용, live resource 생성, credential 사용, interruption cleanup을 무시한다.
+
+HashiCorp Terraform provider acceptance test는 실제 infrastructure와 비용을 만들 수 있다.
+
+### S34. Pass-Only Verification
+
+test가 pass하는지만 확인하고 해당 test가 실제 failure를 감지할 수 있는지 확인하지 않는다.
+
+HashiCorp acceptance-test Skill의 flip test와 Superpowers의 RED 확인이 반례다.
+
+### S35. Raw-State First
+
+stable command/API/generated schema가 있는데 raw internal state 전체를 먼저 읽어 context 비용과 sensitive-data 노출을 키운다.
+
+HashiCorp는 `terraform state list`, `terraform show -json` 같은 documented interface를 우선한다.
+
+
 
 ## 19. 다음 실제 실험으로 연결할 항목
 
