@@ -465,9 +465,9 @@ calibration이 끝난 뒤 development 44개를 사용해:
 
 ---
 
-# 16. Confirmatory holdout
+# 16. Frozen confirmatory set
 
-final candidate description을 고정한 뒤 holdout을 실행한다.
+final candidate description을 고정한 뒤 frozen confirmatory set을 실행한다. 이 set은 tuning에는 사용하지 않지만 corpus 작성자가 이미 전체 prompt를 본 상태이므로 blind holdout은 아니다.
 
 최종 보고서에 최소 포함:
 
@@ -499,3 +499,10 @@ final candidate description을 고정한 뒤 holdout을 실행한다.
 6. variant를 바꿔도 body와 나머지 조건이 동일하다.
 
 이 조건이 만족될 때만 full eval로 넘어간다.
+
+
+## Publication-level external holdout
+
+책에서 model/host 일반화 수치를 제시하기 전에는 별도의 unseen dataset을 추가한다.
+
+내부 frozen set의 목적은 **분할 변경과 tuning leakage를 줄이는 것**이지, 독립 검증을 대체하는 것이 아니다.
