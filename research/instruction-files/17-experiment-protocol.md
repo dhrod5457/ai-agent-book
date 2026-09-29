@@ -104,11 +104,13 @@ Source:
 - 분야 관련 keyword를 많이 나열
 - Skill body의 mechanism까지 description에 포함
 - 인접 Skill 경계 없음
-- 800~1000자 범위
+- 같은 언어의 A1보다 충분히 길고 넓게 작성
 
 목적:
 
-과도한 description이 false positive와 collision을 늘리는지 확인.
+과도하게 넓고 장황한 description이 false positive와 collision을 늘리는지 확인.
+
+문자 수 절대값을 고정하지 않는다. 한국어와 영어의 문자/토큰 밀도가 다르므로 variant별 실제 char/token 수를 함께 기록한다.
 
 ### A1. Concise What + When
 
@@ -122,6 +124,17 @@ Source:
 목적:
 
 공식 권고에 가까운 baseline.
+
+### A1L. Length Control
+
+A1과 같은 trigger 의미를 유지하되 실행 메커니즘, 검증 방식 등 **routing에는 필요 없는 정보**를 추가해 A0에 가까운 길이로 만든다.
+
+목적:
+
+- A1 vs A1L: 길이 증가 자체의 영향
+- A0 vs A1L: 비슷한 길이에서 broadness의 영향
+
+을 분리해서 본다.
 
 ### A2. Boundary-Aware
 
