@@ -743,3 +743,199 @@ https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-ski
 - prompt + description 기반 선택
 - explicit invocation
 - enable/disable/reload workflow
+
+
+## L. 2026 Q3 유명 Skill 실제 규칙
+
+조사 기간: 2026-07-01 ~ 2026-09-30
+
+### Anthropic Skills
+
+Repository:
+https://github.com/anthropics/skills
+
+Representative:
+https://github.com/anthropics/skills/blob/main/skills/skill-creator/SKILL.md
+
+최근 변경 근거:
+- 2026-08-18 academy-guide description 1,176 → 992 chars
+- 2026-07-17 office skills 문서 trim
+- 2026-09-29 claude-api eval/hillclimb guide 보강
+
+사용할 근거:
+- intent capture
+- realistic eval prompts
+- trigger description
+- progressive disclosure
+- imperative instructions
+- eval/iterate loop
+
+### Superpowers
+
+Repository:
+https://github.com/obra/superpowers
+
+Representative:
+- skills/using-superpowers/SKILL.md
+- skills/test-driven-development/SKILL.md
+- skills/verification-before-completion/SKILL.md
+- skills/writing-skills/SKILL.md
+
+최근 변경 근거:
+- 2026-07-23 duplicated/social-proof/recap prose 대량 제거
+- TDD rationale 축소 실험에서 pressure compliance 8/10 → 5/10
+- rationale를 Common Rationalizations table에 다시 보존
+- skill integration references를 point-of-use로 이동
+
+사용할 근거:
+- process skill priority
+- pressure testing
+- TDD for skill authoring
+- fresh evidence before completion
+- description trigger-only 철학
+- prose deletion을 eval로 결정
+
+### Matt Pocock Skills
+
+Repository:
+https://github.com/mattpocock/skills
+
+Representative:
+- skills/engineering/implement/SKILL.md
+- skills/engineering/tdd/SKILL.md
+- skills/engineering/code-review/SKILL.md
+- skills/productivity/writing-for-agents/SKILL.md
+
+최근 변경 근거:
+- 2026-09-17 PR Skill을 action workflow에서 format reference로 축소
+- 2026-09-24 stale merge-conflict Skill 삭제
+- description/routing flow 정리
+
+사용할 근거:
+- manual-only implementation Skill
+- pre-agreed test seams
+- vertical slices
+- standards/spec review separation
+- context pointer
+- information hierarchy
+- completion criteria
+- single source of truth
+
+### Addy Osmani Agent Skills
+
+Repository:
+https://github.com/addyosmani/agent-skills
+
+Representative:
+- docs/skill-anatomy.md
+- skills/using-agent-skills/SKILL.md
+- skills/constraint-driven-development/SKILL.md
+- skills/source-driven-development/SKILL.md
+
+최근 변경 근거:
+- 2026-09-23~26 Skill 500-line validator
+- empty directory lint
+- reference link validation
+- artifact path drift checks
+- must-not-fire plugin eval
+- negated-trigger lint
+- security-rule restoration after condensation
+
+사용할 근거:
+- what + when, no workflow summary
+- rationalization/red flag/verification structure
+- model-neutral procedures
+- constraint → command/checker
+- current official source verification
+- Skill authoring rule → lint/CI/eval 승격
+
+### Vercel Agent Skills
+
+Repository:
+https://github.com/vercel-labs/agent-skills
+
+Representative:
+- skills/react-best-practices/SKILL.md
+- skills/react-view-transitions/SKILL.md
+- skills/web-design-guidelines/SKILL.md
+
+최근 변경 근거:
+- 2026-07 React/Next source fact-check
+- absolute rule scope 축소
+- detail을 references로 이동
+- Skill prose terse rewrite
+- markdown cross-reference anchor 검증
+
+사용할 근거:
+- rule priority
+- rule index + detail files
+- live source
+- source-backed corrections
+- framework-specific stale knowledge 관리
+
+### Planning with Files
+
+Repository:
+https://github.com/OthmanAdi/planning-with-files
+
+Representative:
+skills/planning-with-files/SKILL.md
+
+최근 변경 근거:
+- 2026-09 Cursor/Gemini hook schema 수정
+- Python import isolation
+- Stop hook noise 제거
+- plan attestation target
+- stale pointer handling
+
+사용할 근거:
+- persistent file memory
+- 2-action rule
+- read-before-decide
+- update-after-act
+- 3-strike failure protocol
+- Hook-backed enforcement
+- replay security boundary
+- host adapter drift
+
+### Ponytail
+
+Repository:
+https://github.com/DietrichGebert/ponytail
+
+Representative:
+skills/ponytail/SKILL.md
+
+최근 변경 근거:
+- 2026-07 ponytail marker scope 축소
+- adapter/filter bugs 수정
+- 2026-09 Cursor native hook 지원
+
+사용할 근거:
+- YAGNI ladder
+- reuse/stdlib/native/dependency/minimal code order
+- unrequested abstraction 금지
+- smallest correct diff
+- rule over-application 후 scope 축소
+
+### ECC
+
+Repository:
+https://github.com/affaan-m/ECC
+
+Representative:
+- .agents/skills/tdd-workflow/SKILL.md
+- .agents/skills/verification-loop/SKILL.md
+
+최근 변경 근거:
+- 2026-09 MCP health Hook matcher 축소
+- failed step evidence propagation 차단
+- destructive SQL detection hardening
+- hook isolation
+- Lean / Full / Auto profile
+
+사용할 근거:
+- TDD + coverage gates
+- build/type/lint/test/security/diff verification
+- Skill + Rule + Hook 결합
+- deterministic enforcement scope
