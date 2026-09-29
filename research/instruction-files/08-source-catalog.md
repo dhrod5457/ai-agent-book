@@ -1087,3 +1087,89 @@ data/2026-09-29/
 주의:
 - 제3자 집계이므로 Skill 품질의 객관적 ranking 근거로 사용하지 않음
 - install/star 수를 authoring quality score로 해석하지 않음
+
+
+## N. 추가 공식 조직 Skill과 governance 사례
+
+조사 기간: 2026-07-01 ~ 2026-09-30
+
+### GitHub Awesome Copilot
+
+Repository:
+https://github.com/github/awesome-copilot
+
+Representative:
+- .github/skills/code-review/SKILL.md
+
+최근 변경 근거:
+- 2026-09-23 `d7e4ad98`: repository-specific code-review quality Skill 추가
+
+사용할 근거:
+- deterministic checklist와 editorial judgment 분리
+- AI-authored label 자체를 품질 defect로 사용하지 않음
+- concrete/actionable evidence 기반 review
+- review-policy instruction 변경을 security-sensitive governance change로 취급
+
+주의:
+- community contribution이 포함되는 공식 GitHub 조직 repository이므로 모든 Skill을 GitHub 내부 authored policy로 일반화하지 않음
+
+### Stripe AI
+
+Repository:
+https://github.com/stripe/ai
+
+Representative:
+- skills/stripe-best-practices/SKILL.md
+- skills/upgrade-stripe/SKILL.md
+
+사용할 근거:
+- live current-version lookup 우선
+- dated bundled fallback snapshot
+- fallback freshness interval 설명
+- live verification 실패 시 latest라고 주장하지 않음
+- explicit user target이 latest보다 우선할 수 있음
+- stable → preview 임의 upgrade 금지
+
+주의:
+- Skill 파일은 자주 sync되므로 개별 sync commit보다 generated/current architecture를 근거로 사용
+
+### MongoDB Agent Skills
+
+Repository:
+https://github.com/mongodb/agent-skills
+
+Representative:
+- skills/mongodb-connection/SKILL.md
+- skills/mongodb-query-optimizer/SKILL.md
+
+사용할 근거:
+- Context Before Configuration
+- context 없는 magic-number recommendation 금지
+- performance evidence: indexes / explain / slow logs / Performance Advisor
+- evidence에 맞춘 assertion strength
+- user approval 없는 index mutation 금지
+- explicit trigger boundary: optimization Skill은 general query authoring에 사용하지 않음
+
+주의:
+- 대표 path의 이번 3개월 직접 수정 commit은 확인하지 못했으므로 현행 구조 사례로만 사용
+
+### HashiCorp Agent Skills
+
+Repository:
+https://github.com/hashicorp/agent-skills
+
+Representative:
+- plugins/terraform/skills/refactor-module/SKILL.md
+- plugins/terraform/skills/run-acceptance-tests/SKILL.md
+
+최근 변경 근거:
+- 2026-08-10 `4451ceca`: token-efficient Terraform state access, provider config/test Skill, repository governance 통합
+
+사용할 근거:
+- acceptance test가 real infrastructure와 비용을 만들 수 있다는 operational gate
+- test-account credential confirmation
+- invocation-local secrets
+- interrupted acceptance test cleanup/sweeper
+- suspiciously passing test의 failure sensitivity 확인
+- raw state 대신 documented stable interfaces 우선
+- Skill proposal/update template에 source, owner, routing eval, operational-safety review 포함
