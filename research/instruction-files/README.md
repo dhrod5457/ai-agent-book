@@ -91,6 +91,9 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [18-trigger-eval-corpus.md](18-trigger-eval-corpus.md): feature/bugfix/refactor/review/none 80개 trigger corpus
 - [19-scope-eval-fixture.md](19-scope-eval-fixture.md): monolithic root vs nested/path-scoped instruction 비교 fixture 설계
 - [20-evidence-gap-matrix.md](20-evidence-gap-matrix.md): 책의 핵심 주장별 근거 수준과 남은 실험 공백
+- [21-cross-host-skill-pilot-adapters.md](21-cross-host-skill-pilot-adapters.md): Claude/Codex/Cursor/Gemini/Copilot Skill runtime·관측 차이
+- [../experiments/trigger-routing/v0.1/README.md](../experiments/trigger-routing/v0.1/README.md): trigger routing calibration pilot fixture
+- [../experiments/trigger-routing/v0.1/RUNBOOK.md](../experiments/trigger-routing/v0.1/RUNBOOK.md): host별 trigger pilot 실행 절차
 
 ## 출처 우선순위
 
