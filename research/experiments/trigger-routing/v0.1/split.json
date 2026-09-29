@@ -5,14 +5,15 @@
   "policy": {
     "calibration": "20 fixed pilot cases; may be used to repair harness/grader and are never counted in final metrics",
     "development": "44 cases; may be used for description iteration after calibration",
-    "holdout": "16 untouched cases; do not inspect during description tuning; final confirmatory evaluation only",
+    "holdout": "16 frozen confirmatory cases; do not use for iterative tuning. Not a truly blind holdout because the corpus author has seen/authored all prompts.",
     "holdout_quota": {
       "feature": 3,
       "bugfix": 3,
       "refactor": 3,
       "review": 3,
       "none": 4
-    }
+    },
+    "future_external_holdout": "Required before publication-level claims: independently authored or otherwise unseen prompt set."
   },
   "source_blobs": {
     "corpus_sha": "6f310a82f4765d8e200d285f01cb0a628e026678",
@@ -208,5 +209,10 @@
         "whitespace_tokens": 41
       }
     }
-  }
+  },
+  "limitations": [
+    "The 16-case holdout is frozen but not blind to the corpus author.",
+    "Use it for within-project confirmation, not as the sole basis for generalization.",
+    "Publication-level claims should add an independently authored/unseen external holdout."
+  ]
 }
