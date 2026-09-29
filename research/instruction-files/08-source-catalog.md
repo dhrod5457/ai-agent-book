@@ -939,3 +939,151 @@ Representative:
 - build/type/lint/test/security/diff verification
 - Skill + Rule + Hook 결합
 - deterministic enforcement scope
+
+
+## M. 공식 Vendor Skill maintenance 사례
+
+조사 기간: 2026-07-01 ~ 2026-09-30
+
+### Firebase Agent Skills
+
+Repository:
+https://github.com/firebase/agent-skills
+
+Representative:
+- skills/firebase-security-rules-auditor/SKILL.md
+
+최근 변경 근거:
+- 2026-07-27 `97090866`: description을 약 69 tokens로 압축하면서 trigger coverage와 negative boundary 확장, activation eval 결과를 근거로 사용
+- 2026-09-17 `e35a2d54`: Firestore/Security Rules의 객관적으로 잘못된 code/rule 수정
+
+사용할 근거:
+- concise + trigger-rich description
+- explicit "Don't use for" boundary
+- red-team checklist
+- structured JSON output contract
+- Skill content도 domain correctness regression을 가질 수 있음
+
+### Expo Skills
+
+Repository:
+https://github.com/expo/skills
+
+Representative:
+- .claude/skills/expo-skill-eval/SKILL.md
+- plugins/expo/skills/expo-upgrade/SKILL.md
+
+최근 변경 근거:
+- 2026-07-22 `cb916609`: canonical feedback block + validator/CI enforcement
+- 2026-08-04 `5c8f62e0`: eval-candidate signal 수집
+- 2026-08-13 `37397230`: Hermes V1 memory regression guidance
+- 2026-09-02 `80090ccd`: 실제 feedback 기반 upgrade guidance 수정
+
+사용할 근거:
+- trigger accuracy / code quality / runtime screenshot 분리
+- candidate Skill과 installed published Skill collision 방지
+- evaluator allowed-tools 최소화
+- version-specific upgrade reference
+- production feedback → eval candidate → Skill maintenance
+
+### Supabase Agent Skills
+
+Repository:
+https://github.com/supabase/agent-skills
+
+Representative:
+- skills/supabase-postgres-best-practices/SKILL.md
+
+최근 변경 근거:
+- 2026-07-30 `32912161`: performance에 치우친 description을 schema/migration/RLS/SQL authoring trigger까지 확장
+
+사용할 근거:
+- under-trigger correction
+- prioritized rule categories
+- thin entrypoint + detailed reference files
+
+### Cloudflare Skills
+
+Repository:
+https://github.com/cloudflare/skills
+
+Representative:
+- skills/workers-best-practices/SKILL.md
+
+2026-09-05 연속 refactor 근거:
+- `79101242`: description을 distinct task trigger로 축소
+- `f77752ea`: retrieval/validation을 affected task에 scope
+- `defd1121`: generic review procedure 제거
+- `42839d0d`: concrete Workers anti-pattern 복구
+- `a31c2c41`: focused reference files로 분리
+- `3cc7ee96`: description 단순화
+- `8afcf8a2`: retrieval-first guidance 명시적으로 복구
+
+사용할 근거:
+- prefer retrieval over pre-training
+- project configured version/compatibility date를 baseline으로 사용
+- latest != applicable
+- generic process 제거, domain-specific surprise 유지
+- task-scoped validation
+
+### Firecrawl CLI Skills
+
+Repository:
+https://github.com/firecrawl/cli
+
+Representative:
+- skills/firecrawl/SKILL.md
+- firecrawl-* subskills
+
+2026-08-20 핵심 변경:
+- `41cc07c7`: router 329 → 141 lines, monitor/install/search detail을 canonical subskill/rule로 이동
+- `980163d7`: cached CLI option tables를 `<command> --help` pointer로 교체, 중복 When-to-use 삭제, positive phrasing, 각 narrow Skill에 하나의 Done-when criterion
+- `3ebf535a`: always-loaded description을 trigger-first로 압축
+- `1d5be955`: forensics에서 빠진 neutral web-research trigger를 복구하고 429/auth terminal rules 추가
+
+사용할 근거:
+- thin router
+- canonical CLI help
+- cheapest-sufficient primitive escalation
+- one observable completion bound
+- compression 후 behavior regression을 다시 복구
+- fetched content reuse / no redundant work
+
+### Google Labs Stitch Skills
+
+Repository:
+https://github.com/google-labs-code/stitch-skills
+
+Representative:
+- plugins/stitch-design/skills/generate-design/SKILL.md
+
+현재 구조 근거:
+- design system 존재 시 generation prompt에서 color/font/theme token을 중복하지 않음
+- generation은 layout/content/structure에 집중
+- edit flow는 targeted adjustment
+- related Skill로 책임 handoff
+
+주의:
+- 이번 3개월에 representative file 자체의 변경 이력은 확인하지 못했으므로 현행 구조 사례로만 사용
+
+사용할 근거:
+- canonical source ownership
+- duplicated domain token 방지
+- targeted edit before regeneration
+- Skill-to-Skill responsibility separation
+
+### Popularity candidate discovery snapshot
+
+Repository:
+https://github.com/LinklyAI/best-skills
+
+Snapshot:
+data/2026-09-29/
+
+사용 범위:
+- 최근 많이 설치되거나 널리 노출된 Skill 후보 발굴
+- official vendor 후보 확장
+
+주의:
+- 제3자 집계이므로 Skill 품질의 객관적 ranking 근거로 사용하지 않음
+- install/star 수를 authoring quality score로 해석하지 않음
