@@ -85,6 +85,8 @@ pstack의 실제 작성 규칙은 반복되는 자연어 지시를 계속 추가
 - [12-observed-patterns-and-smells.md](12-observed-patterns-and-smells.md): corpus에서 관찰한 작성 패턴과 instruction smell
 - [13-real-world-validation-patterns.md](13-real-world-validation-patterns.md): 실제 저장소의 validator와 trigger eval 운영 방식
 - [14-real-world-hook-patterns.md](14-real-world-hook-patterns.md): 실제 저장소의 Hook enforcement 및 테스트 패턴
+- [15-instruction-debt-history.md](15-instruction-debt-history.md): 공개 저장소 commit history로 추적한 Instruction Debt
+- [16-nested-scope-case-studies.md](16-nested-scope-case-studies.md): nested AGENTS.md와 path scope 실제 사례
 
 ## 출처 우선순위
 
