@@ -24,7 +24,7 @@ research 문서는 공식 근거가 아니어서, APPLY-NOW 는 Claude Code 공�
 
 | # | 발견 | 해당 분류 | 조치 | 확인 방법 |
 |---|---|---|---|---|
-| 1 | Claude Code 기본 Git 지시 "If on the default branch, branch first" 가 사용자 규칙 "확인한 변경은 기본 브랜치에 커밋" 과 경쟁 | 12 에 없는 유형. 아래 §4 후보 S36 | `includeGitInstructions: false`, 기본 지시 중 필요한 두 문장(대화형 플래그 금지, `gh` 사용)을 사용자 규칙으로 이관 | `claude -p --settings '{"includeGitInstructions":false}'` 로 Bash 도구 설명의 `# Git` 네 문장이 빠지는 것을 확인 |
+| 1 | Claude Code 기본 Git 지시 "If on the default branch, branch first" 가 사용자 규칙 "확인한 변경은 기본 브랜치에 커밋" 과 경쟁 | 12 에 없는 유형. 아래 §4 후보 S36 | `includeGitInstructions: false`, 기본 지시 중 필요한 세 가지(대화형 플래그 금지, `gh` 사용, `Co-Authored-By` 트레일러)를 사용자 규칙으로 이관 | `claude -p --settings '{"includeGitInstructions":false}'` 로 Bash 도구 설명의 `# Git` 네 문장이 빠지는 것을 확인. 처음에는 트레일러를 옮기지 않아, 새 세션 커밋에서 트레일러가 빠진 것을 적용 뒤 시험으로 찾았다 |
 | 2 | 같은 `CLAUDE.md` 안의 충돌 2건. 위임 절 "모호하면 먼저 묻는다" 대 기본 원칙 "승인 대상이 아니면 묻지 않는다", Git 절 "섞인 변경은 묻는다" 대 같은 기본 원칙 | 27 §7 standing contract 의 conflict | 위임 절 문장 수정, 기본 원칙에 예외 명시 | 두 번째는 `/doctor prompt-audit` 가 찾음 |
 | 3 | Skill 이 "전역 CLAUDE.md 의 승인 대상" 이라고 가리키는 규칙이 전역에 없음(운영 배포 Jenkins 잡) | 12 S6 Registration Drift 의 계층 간 형태 | 승인 목록에 추가(사용자 결정), 같은 날 Hook 으로 강제 | `/doctor prompt-audit` 가 찾음 |
 | 4 | Skill 본문 안의 절차 충돌. "완료를 기다리지 않는다" 대 "노드별로 SUCCESS 확인 뒤 다음 노드" | 27 §7 Handoff · Evidence | 순차 배포만 전경 대기, `SUCCESS` 이외 값과 도구 오류는 멈춤, 실패 노드 재실행 금지 | 반박 검토가 처음 수정안(Monitor 대기)을 전역 규칙과의 새 충돌로 지적해 바꿈 |
