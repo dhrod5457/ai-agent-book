@@ -20,6 +20,7 @@
 - `variants.json`: A0 Broad, A1 Concise, A1L Length-Control, A2 Boundary-Aware의 정확한 description
 - `pilot-cases.json`: 20개 calibration prompt
 - `harness.py`: fixture validation, host별 Skill materialize, 결과 score
+- `phase_a_runner.py`: Claude Code/Codex/Gemini CLI Phase A fresh-process 실행 및 raw trace 수집
 - `test_harness.py`: harness 표준 라이브러리 기반 회귀 테스트
 - `results-template.csv`: 수집 결과 schema
 - `split.json`: calibration/development/frozen confirmatory split
@@ -68,7 +69,7 @@ manual-only는 공통 variant에서 제외한다.
 ```bash
 cd research/experiments/trigger-routing/v0.1
 python3 harness.py validate
-python3 -m unittest -v test_harness.py
+python3 -m unittest -v test_harness.py test_phase_a_runner.py
 ```
 
 variant를 host별 project Skill 위치에 materialize할 수 있다.
