@@ -2,7 +2,7 @@
 
 ## 상태
 
-**FIXTURE IMPLEMENTED / HOST RUN NOT STARTED**
+**SMOKE RUN STARTED / CALIBRATION NOT STARTED**
 
 Experiment B의 첫 비교는 다음 두 조건만 다룬다.
 
@@ -184,10 +184,10 @@ runner는 task마다 fresh synthetic workspace를 만들고 task의 `working_dir
 Claude Code는 현재 built-in `agents-md`를 다음 모드로 강제한다.
 
 ```text
-claude-md-or-agents-md
+claude-md-and-agents-md
 ```
 
-fixture에는 CLAUDE.md가 없으므로 root AGENTS와, 하위 파일을 Read할 때 해당 nested AGENTS가 적용된다.
+fixture에는 CLAUDE.md가 없다. fallback suppression을 피하기 위해 both 모드를 명시한다. 설정 전달만으로 실제 로딩을 증명하지 않으며, smoke의 검증 수행과 raw trace를 함께 확인한다. 로컬에는 Claude 2.1.274와 2.1.287이 공존했으므로 PATH와 preflight의 실제 binary/version을 고정해야 한다.
 
 Claude permission boundary:
 
@@ -199,6 +199,7 @@ Claude permission boundary:
 Codex permission boundary:
 
 - sandbox: workspace-write
+- add-dir: 해당 run의 synthetic workspace root (subsystem CWD에서도 검증 로그 쓰기 허용)
 - approval: never
 - 기본 sandbox network 정책 유지
 
@@ -211,3 +212,11 @@ Gemini `auto_edit`는 edit tool만 자동 승인하고 shell validation은 별�
 
 따라서 Phase B v0.1에서는 Claude/Codex로 S0/S1 fixture를 먼저 안정화하고,
 Gemini는 verifier command만 허용하는 Policy Engine profile을 추가한 뒤 같은 실험에 넣는다.
+
+## 2026-10-03 smoke 수정
+
+- G5: `.experiment/validation-log.jsonl`은 평가 기록이며 task 파일 제한의 예외다. 삭제·복원·덮어쓰기를 금지한다.
+- 기존 과제의 “한 파일만 수정” 제한 때문에 Codex가 정상 검증 후 로그를 정리하는 경우를 실제로 관측했다. 로그 없음은 검증 미실행과 동일하지 않았다.
+- timeout의 byte stdout/stderr를 보존하고 stdin을 닫아 외부 입력 혼입을 막는다.
+- 수정 전 run은 calibration에서 제외한다.
+- 결과: [SMOKE-REPORT-2026-10-03.md](../../SMOKE-REPORT-2026-10-03.md).

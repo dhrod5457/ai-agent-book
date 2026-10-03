@@ -546,3 +546,17 @@ source collection 이후 실제 experiment harness 구현으로 전환했다.
 6. adapter가 안정되면 calibration 전체 실행
 
 실제 host/model/version이 기록되지 않은 harness-only 결과를 책의 효과 수치로 사용하지 않는다.
+
+
+## 2026-10-03 실제 host smoke 시작
+
+로컬 환경의 Claude/Codex/Gemini에서 소규모 실행을 시작했다.
+
+- Claude/Codex: feature·bugfix sentinel 확인. none은 아직 unobservable이다.
+- Scope: sandbox CWD와 검증 기록 정리 때문에 발생한 오류를 수정하고 S0/S1 smoke를 재실행했다.
+- Gemini: CLI option mismatch 수정 후 UNSUPPORTED_CLIENT 인증 거부를 확인했다.
+- 모든 시도는 관측/fixture 검증이며 효과 크기 또는 full calibration 결과가 아니다.
+- source/adapter가 바뀐 이전 smoke는 calibration에서 제외한다.
+- 상세 결과: [SMOKE-REPORT-2026-10-03.md](../experiments/SMOKE-REPORT-2026-10-03.md).
+
+다음 우선순위: none 관측 정책 확정, 깨끗한 host 환경에서 scope 전체 calibration, Gemini 지원 클라이언트/인증 경로 확인.

@@ -1,6 +1,7 @@
 import importlib.util
 import sys
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
 SPEC_S = importlib.util.spec_from_file_location(
@@ -28,7 +29,7 @@ class PhaseBRunnerTests(unittest.TestCase):
         self.assertIn("Bash(python3 *scripts/verify.py*)", command)
         self.assertIn("mcp__*", command)
         self.assertIn("agents-md@builtin", joined)
-        self.assertIn("claude-md-or-agents-md", joined)
+        self.assertIn("claude-md-and-agents-md", joined)
         self.assertIn("--no-session-persistence", command)
 
     def test_codex_command_uses_workspace_write_without_approval(self):
@@ -37,6 +38,18 @@ class PhaseBRunnerTests(unittest.TestCase):
         self.assertIn("--sandbox workspace-write", joined)
         self.assertIn("--ask-for-approval never", joined)
         self.assertIn("exec --json", joined)
+
+    def test_codex_can_write_verifier_log_above_task_cwd(self):
+        workspace = Path("/tmp/synthetic-workspace")
+        command = runner.build_command("codex", "task", "model", workspace)
+        self.assertEqual(str(workspace.resolve()), command[command.index("--add-dir") + 1])
+        self.assertLess(command.index("--add-dir"), command.index("exec"))
+
+    def test_preflight_rejects_claude_without_native_agents_support(self):
+        with patch.object(runner.shutil, "which", return_value="/bin/claude"), \
+             patch.object(runner, "command_version", return_value="2.1.274 (Claude Code)"):
+            with self.assertRaisesRegex(runner.RunnerError, "check PATH"):
+                runner.preflight("claude")
 
     def test_summary_separates_variants(self):
         base = {

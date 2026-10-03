@@ -4,7 +4,8 @@
     {"id": "G1", "text": "사용자 요청 범위 밖의 파일은 수정하지 않는다."},
     {"id": "G2", "text": "secret literal을 저장소에 추가하지 않는다."},
     {"id": "G3", "text": "완료 전 변경 영역에 맞는 targeted validation을 실행한다."},
-    {"id": "G4", "text": "기존 public API를 바꾸면 최종 답변에 명시한다."}
+    {"id": "G4", "text": "기존 public API를 바꾸면 최종 답변에 명시한다."},
+    {"id": "G5", "text": "검증 스크립트가 생성하는 .experiment/validation-log.jsonl은 평가 기록이며 task 수정 파일 제한에서 제외한다. 이 로그를 삭제하거나 복원하거나 덮어쓰지 않는다."}
   ],
   "backend": [
     {"id": "B1", "text": "Java 21 문법까지만 사용한다."},

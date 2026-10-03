@@ -11,6 +11,7 @@ import argparse
 import csv
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -78,7 +79,12 @@ def preflight(host: str) -> dict[str, str]:
     path = shutil.which(binary)
     if not path:
         raise RunnerError(f"{binary!r} is not installed or not on PATH")
-    return {"binary": path, "host_version": command_version(binary)}
+    version = command_version(binary)
+    if host == "claude":
+        match = re.search(r"(\d+)\.(\d+)\.(\d+)", version)
+        if not match or tuple(map(int, match.groups())) < (2, 1, 277):
+            raise RunnerError("native AGENTS.md smoke requires Claude Code >= 2.1.277; check PATH")
+    return {"binary": path, "host_version": version}
 
 
 def init_git_repo(path: Path) -> None:
@@ -102,14 +108,14 @@ def claude_settings_json() -> str:
         "pluginConfigs": {
             "agents-md@builtin": {
                 "options": {
-                    "instructionFiles": "claude-md-or-agents-md"
+                    "instructionFiles": "claude-md-and-agents-md"
                 }
             }
         }
     }, separators=(",", ":"))
 
 
-def build_command(host: str, prompt: str, model: str | None) -> list[str]:
+def build_command(host: str, prompt: str, model: str | None, workspace: Path | None = None) -> list[str]:
     if host == "claude":
         command = [
             "claude",
@@ -151,6 +157,8 @@ def build_command(host: str, prompt: str, model: str | None) -> list[str]:
         ]
         if model:
             command += ["--model", model]
+        if workspace is not None:
+            command += ["--add-dir", str(workspace.resolve())]
         command += ["exec", "--json", prompt]
         return command
 
@@ -200,7 +208,7 @@ def run_one(
     if not working_dir.is_dir():
         raise RunnerError(f"task {task['id']} working_dir missing: {working_dir}")
 
-    command = build_command(host, str(task["prompt"]), model)
+    command = build_command(host, str(task["prompt"]), model, workspace)
     (raw / "command.json").write_text(
         json.dumps(command, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
@@ -222,6 +230,7 @@ def run_one(
             timeout=timeout,
             check=False,
             env=os.environ.copy(),
+            stdin=subprocess.DEVNULL,
         )
         exit_code = proc.returncode
         stdout = proc.stdout or ""
@@ -230,8 +239,8 @@ def run_one(
             notes.append(f"agent-exit={exit_code}")
     except subprocess.TimeoutExpired as exc:
         exit_code = 124
-        stdout = exc.stdout if isinstance(exc.stdout, str) else ""
-        stderr = exc.stderr if isinstance(exc.stderr, str) else ""
+        stdout = exc.stdout.decode("utf-8", errors="replace") if isinstance(exc.stdout, bytes) else (exc.stdout or "")
+        stderr = exc.stderr.decode("utf-8", errors="replace") if isinstance(exc.stderr, bytes) else (exc.stderr or "")
         notes.append(f"timeout>{timeout}s")
 
     latency_ms = int((time.monotonic() - started) * 1000)

@@ -64,13 +64,18 @@ def build_command(host: str, prompt: str, model: str | None) -> list[str]:
             "--verbose",
             "--no-session-persistence",
             "--permission-mode", "plan",
+            "--setting-sources", "project",
+            "--tools", "Skill,Read,Glob,Grep",
+            "--strict-mcp-config",
+            "--mcp-config", '{"mcpServers":{}}',
+            "--no-chrome",
         ]
         if model:
             command += ["--model", model]
         return command
 
     if host == "codex":
-        command = ["codex", "exec", "--json"]
+        command = ["codex", "--sandbox", "read-only", "--ask-for-approval", "never", "exec", "--json"]
         if model:
             command += ["--model", model]
         command.append(prompt)
@@ -80,7 +85,6 @@ def build_command(host: str, prompt: str, model: str | None) -> list[str]:
         command = [
             "gemini", "-p", prompt,
             "--output-format", "stream-json",
-            "--skip-trust",
             "--approval-mode", "plan",
         ]
         if model:
@@ -130,21 +134,51 @@ def parse_json_lines(text: str) -> list[Any]:
 
 
 def extract_result(host: str, stdout: str, returncode: int) -> tuple[str, bool, str, bool]:
-    if host == "gemini":
-        for event in parse_json_lines(stdout):
+    # Commands, tool output and echoed skill bodies are not activation evidence.
+    if returncode != 0:
+        return "unobservable", False, "host-did-not-complete", False
+    events = parse_json_lines(stdout)
+    texts: list[str] = []
+    for event in events:
+        if not isinstance(event, dict):
+            continue
+        if host == "gemini":
             native = recursive_activate_skill(event)
             if native:
                 return native, True, f"activate_skill:{native}", True
-
-    sentinel = SENTINEL_RE.search(stdout)
-    if sentinel:
-        name = sentinel.group(1)
+            if event.get("type") == "message" and event.get("role") == "assistant":
+                texts.append(str(event.get("content", "")))
+        elif host == "claude":
+            if event.get("type") == "result" and not event.get("is_error", False):
+                texts.append(str(event.get("result", "")))
+            if event.get("type") == "assistant":
+                for block in event.get("message", {}).get("content", []):
+                    if block.get("type") == "text":
+                        texts.append(str(block.get("text", "")))
+        elif host == "codex" and event.get("type") == "item.completed":
+            item = event.get("item", {})
+            if item.get("type") == "agent_message":
+                texts.append(str(item.get("text", "")))
+    labels = {match.group(1) for text in texts
+              if (match := SENTINEL_RE.fullmatch(text.strip()))}
+    if len(labels) == 1:
+        name = labels.pop()
         return name, True, f"sentinel:{name}", True
-
-    if host == "gemini" and returncode == 0:
+    if len(labels) > 1:
+        return "unobservable", False, "multiple-activation-sentinels", True
+    if host == "gemini" and any(
+        isinstance(e, dict) and e.get("type") == "result"
+        and e.get("status") == "success" for e in events
+    ):
         return "none", True, "no-activate_skill-event", False
-
     return "unobservable", False, "no-reliable-activation-evidence", False
+
+
+def partial_text(value: str | bytes | None) -> str:
+    """TimeoutExpired carries bytes even when subprocess text mode is enabled."""
+    if isinstance(value, bytes):
+        return value.decode("utf-8", errors="replace")
+    return value or ""
 
 
 def init_git_repo(path: Path) -> None:
@@ -203,6 +237,7 @@ def run_one(
             timeout=timeout,
             check=False,
             env=os.environ.copy(),
+            stdin=subprocess.DEVNULL,
         )
         returncode = proc.returncode
         stdout = proc.stdout or ""
@@ -210,8 +245,8 @@ def run_one(
         note = "" if returncode == 0 else f"host-exit={returncode}"
     except subprocess.TimeoutExpired as exc:
         returncode = 124
-        stdout = exc.stdout if isinstance(exc.stdout, str) else ""
-        stderr = exc.stderr if isinstance(exc.stderr, str) else ""
+        stdout = partial_text(exc.stdout)
+        stderr = partial_text(exc.stderr)
         note = f"timeout>{timeout}s"
 
     latency_ms = int((time.monotonic() - started) * 1000)

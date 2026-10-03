@@ -4,7 +4,7 @@
 
 ## 상태
 
-**HARNESS READY / HOST RUN NOT STARTED**
+**SMOKE RUN STARTED / CALIBRATION NOT STARTED**
 
 자료 수집 단계는 종료했고 실제 cross-host routing 실측을 위한 실행 harness까지 구현했다.
 
@@ -26,9 +26,11 @@
 - 실제 Codex routing calibration
 - 실제 Gemini CLI routing calibration
 
-이 대화의 실행 환경에는 `claude`, `codex`, `gemini`, `cursor`, `copilot` CLI가 설치되어 있지 않다.
+2026-10-03 로컬 환경에서 Claude Code 2.1.287, Codex CLI 0.160.0, Gemini CLI 0.38.2로 첫 smoke를 실행했다.
 
-따라서 실제 수치를 임의로 만들지 않았다.
+Claude/Codex의 feature·bugfix sentinel을 관측했다. none은 여전히 unobservable로 유지한다. Gemini는 지원되지 않는 `--skip-trust` 옵션을 제거한 뒤 서버의 `UNSUPPORTED_CLIENT` 인증 거부를 확인했다. 이 시도들은 전체 calibration 또는 책의 효과 수치가 아니다.
+
+상세 결과와 무효화 정책: [SMOKE-REPORT-2026-10-03.md](../../SMOKE-REPORT-2026-10-03.md).
 
 ---
 
@@ -65,9 +67,9 @@ Skill body:
 
 host별 추가 경계:
 
-- Claude: `--permission-mode plan`
+- Claude: `--permission-mode plan`, `Skill,Read,Glob,Grep`만 제공, user settings/MCP/browser 제외
 - Gemini: `--approval-mode plan`
-- Codex: `--full-auto` 사용 안 함
+- Codex: `--sandbox read-only`, `--ask-for-approval never`, `--full-auto` 사용 안 함
 
 ---
 
