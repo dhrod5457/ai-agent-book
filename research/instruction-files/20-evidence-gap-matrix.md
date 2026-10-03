@@ -482,3 +482,20 @@ skillhub 사례는 강하지만 특정 repository/model의 결과다.
 6. prose vs Hook enforcement
 
 새 링크가 생겨도 위 실측 공백을 직접 줄이지 않으면 corpus 확장 우선순위를 낮춘다.
+
+
+## 2026-10-03 Link-only source 전수 감사
+
+01~31 연구 문서와 README의 URL을 다시 확인했다.
+
+결론:
+
+- 핵심 공식/학술/실제 저장소 source는 별도 분석 또는 후속 synthesis가 존재한다.
+- public corpus의 raw URL 목록은 provenance index이며 12/16/27번 문서에서 후속 분석됐다.
+- OpenAI PLANS.md는 현재 Archived이므로 current syntax evidence가 아니라 historical pattern으로 하향했다.
+- current Codex AGENTS hierarchy, Gemini extension surface, Copilot Code Review semantics를 추가 보강했다.
+- 상세: [32-link-only-source-audit.md](32-link-only-source-audit.md)
+
+따라서 **source-depth 자체는 더 이상 주요 evidence gap이 아니다.**
+
+남은 큰 gap은 controlled experiment다.
