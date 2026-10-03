@@ -36,13 +36,13 @@
       "id": "TJ-01",
       "class": "backend-test",
       "working_dir": "backend",
-      "prompt": "OrderService normalizeStatus의 null 입력 회귀 테스트를 추가해줘. JUnit 5를 사용하고 production 코드는 수정하지 마.",
-      "allowed_files": ["backend/src/test/java/com/example/order/OrderServiceTest.java"],
+      "prompt": "OrderService findOrder가 ID 2에 대해 ORDER-2를 반환하는 JUnit 5 테스트를 새 OrderServiceFindTest.java에 추가해줘. production 코드는 수정하지 마.",
+      "allowed_files": ["backend/src/test/java/com/example/order/OrderServiceFindTest.java"],
       "required_rules": ["G1","G3","B2","B5"],
       "required_validation": ["backend"],
       "forbidden_validation": ["frontend","deploy","docs","all"],
       "must_contain": {
-        "backend/src/test/java/com/example/order/OrderServiceTest.java": ["org.junit.jupiter.api.Test", "normalizeStatus"]
+        "backend/src/test/java/com/example/order/OrderServiceFindTest.java": ["org.junit.jupiter.api.Test", "ORDER-2", "findOrder"]
       }
     },
     {
@@ -81,13 +81,13 @@
       "id": "TF-01",
       "class": "frontend-test",
       "working_dir": "frontend",
-      "prompt": "OrderPage loading 상태가 화면에 보이는지 테스트를 추가해줘. Vitest와 Testing Library를 사용하고 production 코드는 수정하지 마.",
-      "allowed_files": ["frontend/test/OrderPage.test.tsx"],
+      "prompt": "OrderPage가 '1 orders'를 화면에 표시하는 테스트를 새 OrderPage.count.test.tsx에 추가해줘. Vitest와 Testing Library를 사용하고 production 코드는 수정하지 마.",
+      "allowed_files": ["frontend/test/OrderPage.count.test.tsx"],
       "required_rules": ["G1","G3","F2","F5","F6"],
       "required_validation": ["frontend"],
       "forbidden_validation": ["backend","deploy","docs","all"],
       "must_contain": {
-        "frontend/test/OrderPage.test.tsx": ["vitest", "@testing-library/react", "Loading orders"]
+        "frontend/test/OrderPage.count.test.tsx": ["vitest", "@testing-library/react", "1 orders"]
       }
     },
     {
