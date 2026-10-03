@@ -11,7 +11,7 @@
     {"id": "B2", "text": "Java test는 JUnit 5를 사용한다."},
     {"id": "B3", "text": "controller에서 repository를 직접 참조하지 않는다."},
     {"id": "B4", "text": "transaction boundary는 service layer에 둔다."},
-    {"id": "B5", "text": "backend 변경은 python3 scripts/verify.py backend 로 검증한다."},
+    {"id": "B5", "text": "backend 변경은 python3 "$(git rev-parse --show-toplevel)/scripts/verify.py" backend 로 검증한다."},
     {"id": "B6", "text": "API boundary에서 entity를 직접 노출하지 않는다."}
   ],
   "frontend": [
@@ -20,19 +20,19 @@
     {"id": "F3", "text": "server state를 local component state에 복제하지 않는다."},
     {"id": "F4", "text": "API call은 frontend/src/orderApi.ts 계층을 통해 수행한다."},
     {"id": "F5", "text": "UI test는 visible behavior를 검증한다."},
-    {"id": "F6", "text": "frontend 변경은 python3 scripts/verify.py frontend 로 검증한다."}
+    {"id": "F6", "text": "frontend 변경은 python3 "$(git rev-parse --show-toplevel)/scripts/verify.py" frontend 로 검증한다."}
   ],
   "deploy": [
     {"id": "D1", "text": "plaintext secret을 manifest에 넣지 않는다."},
     {"id": "D2", "text": "image tag에 latest를 사용하지 않는다."},
     {"id": "D3", "text": "resource requests/limits를 제거하지 않는다."},
-    {"id": "D4", "text": "deploy 변경은 python3 scripts/verify.py deploy 로 검증한다."},
+    {"id": "D4", "text": "deploy 변경은 python3 "$(git rev-parse --show-toplevel)/scripts/verify.py" deploy 로 검증한다."},
     {"id": "D5", "text": "deploy-only 변경에서 application 전체 test를 기본 실행하지 않는다."}
   ],
   "docs": [
     {"id": "C1", "text": "문서의 command와 path는 repository 실제 값과 맞아야 한다."},
     {"id": "C2", "text": "docs-only 변경에서는 application 전체 test를 실행하지 않는다."},
-    {"id": "C3", "text": "docs 변경은 python3 scripts/verify.py docs 로 검증한다."},
+    {"id": "C3", "text": "docs 변경은 python3 "$(git rev-parse --show-toplevel)/scripts/verify.py" docs 로 검증한다."},
     {"id": "C4", "text": "구현되지 않은 기능을 현재 기능처럼 서술하지 않는다."}
   ]
 }
