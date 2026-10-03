@@ -27,4 +27,4 @@ jobs:
         run: python3 harness.py validate
       - name: Run harness tests
         working-directory: research/experiments/trigger-routing/v0.1
-        run: python3 -m unittest -v test_harness.py
+        run: python3 -m unittest -v test_harness.py test_phase_a_runner.py
