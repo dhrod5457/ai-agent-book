@@ -499,3 +499,50 @@ skillhub 사례는 강하지만 특정 repository/model의 결과다.
 따라서 **source-depth 자체는 더 이상 주요 evidence gap이 아니다.**
 
 남은 큰 gap은 controlled experiment다.
+
+
+## 2026-10-03 Controlled experiment 구현 진행
+
+source collection 이후 실제 experiment harness 구현으로 전환했다.
+
+### Experiment A — Skill description routing
+
+상태:
+
+- fixture frozen
+- host-neutral validator/scorer 구현
+- Claude Code/Codex/Gemini Phase A runner 구현
+- GitHub Actions gate PASS
+- 실제 host smoke는 아직 미실행
+
+### Experiment B — Root monolith vs nested scope
+
+우선 S0/S1만 구현했다.
+
+- S0: monolithic root AGENTS.md
+- S1: root global + nested subsystem AGENTS.md
+- 동일 workload SHA 자동 검증
+- 12개 독립 calibration task
+- deterministic grader
+- Claude Code/Codex Phase B runner
+- GitHub Actions gate PASS
+
+의도적으로 아직 추가하지 않음:
+
+- S2 path-scoped vendor rules
+- S3 procedure-as-Skill
+
+이 둘은 S0/S1 실제 calibration으로 fixture와 grader가 안정된 뒤 확장한다.
+
+### 현재 evidence gap 상태
+
+문서/링크 공백보다 다음 실제 run이 우선이다.
+
+1. Claude Code routing smoke
+2. Codex routing smoke
+3. Gemini routing smoke
+4. Claude Code S0/S1 scope smoke
+5. Codex S0/S1 scope smoke
+6. adapter가 안정되면 calibration 전체 실행
+
+실제 host/model/version이 기록되지 않은 harness-only 결과를 책의 효과 수치로 사용하지 않는다.
