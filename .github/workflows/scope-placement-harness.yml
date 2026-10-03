@@ -29,4 +29,4 @@ jobs:
         run: python3 scope_harness.py validate
       - name: Run scope harness tests
         working-directory: research/experiments/scope-placement/v0.1
-        run: python3 -m unittest -v test_scope_harness.py
+        run: python3 -m unittest -v test_scope_harness.py test_phase_b_runner.py
