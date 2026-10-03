@@ -21,6 +21,7 @@
 - `pilot-cases.json`: 20개 calibration prompt
 - `harness.py`: fixture validation, host별 Skill materialize, 결과 score
 - `phase_a_runner.py`: Claude Code/Codex/Gemini CLI Phase A fresh-process 실행 및 raw trace 수집
+- `PHASE-A-STATUS.md`: 현재 실행 상태, smoke 기준, host 실측 전제
 - `test_harness.py`: harness 표준 라이브러리 기반 회귀 테스트
 - `results-template.csv`: 수집 결과 schema
 - `split.json`: calibration/development/frozen confirmatory split
