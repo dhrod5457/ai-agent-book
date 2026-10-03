@@ -1,93 +1,93 @@
 # 18장. 모델이 바뀌면 지침도 다시 본다
 
-모델 업그레이드는 지침 파일을 그대로 유지하고 model name만 바꾸는 이벤트가 아니다.
+모델 업그레이드는 지침 파일을 그대로 유지하고 모델 이름만 바꾸는 이벤트가 아니다.
 
-새 모델이 이전보다 더 잘하는 영역이 생기면 과거 scaffolding이 불필요해질 수 있다. 반대로 tool use나 routing 특성이 달라져 새로운 failure가 나타날 수도 있다.
+새 모델이 이전보다 더 잘하는 영역이 생기면 과거 모델의 부족한 부분을 보완하는 보조 지침(scaffolding)이 불필요해질 수 있다. 반대로 도구 사용이나 Skill 선택(routing) 특성이 달라져 새로운 실패가 나타날 수도 있다.
 
-따라서 모델 변경은 instruction audit의 trigger다.
+따라서 모델 변경은 지침을 다시 점검해야 하는 계기다.
 
 ## 18.1 무엇을 먼저 의심할 것인가
 
 모델이 바뀌면 다음 유형의 지침을 우선 검토한다.
 
-- think carefully 같은 일반 handholding
+- “신중히 생각하라(think carefully)” 같은 일반적인 보조 설명
 - 동일 의미의 반복 강조
-- 모든 답변 끝에 붙는 self-check
-- broad trigger booster
-- 매우 세세한 step-by-step recipe
-- 모델 기본 행동과 중복되는 clean code 일반론
-- 과거 특정 모델의 약점을 보완한 workaround
-- 오래된 tool limitation을 전제로 한 규칙
+- 모든 답변 끝에 붙는 자기 점검
+- 호출 범위를 넓히는 강조 문구
+- 매우 세세한 단계별 절차
+- 모델 기본 행동과 중복되는 읽고 유지보수하기 좋은 코드 일반론
+- 과거 특정 모델의 약점을 보완한 임시 우회책
+- 오래된 도구의 한계를 전제로 한 규칙
 
 이것들을 무조건 삭제하는 것은 아니다. 현재 모델에서도 실제 효과가 있는지 다시 검증한다.
 
 ## 18.2 Safety rule은 함부로 지우지 않는다
 
-모델이 강해졌다고 safety boundary가 사라지는 것은 아니다.
+모델이 강해졌다고 안전 경계가 사라지는 것은 아니다.
 
-특히 publish, deploy, production write, destructive migration처럼 side effect가 큰 규칙은 모델 능력이 아니라 risk model에 의해 결정된다.
+특히 publish, deploy, 운영 환경에 쓰기, 데이터를 삭제하거나 손상할 수 있는 마이그레이션(migration)처럼 외부 상태 변화(side effect)가 큰 규칙은 모델 능력이 아니라 위험을 판단하는 기준에 의해 결정된다.
 
 다만 안전을 이유로 과도한 차단을 넣은 경우는 다시 볼 수 있다.
 
-예를 들어 checkpoint 이후 모든 관련 명령을 막았는데 실제로는 status 조회나 preview까지 차단한다면 legitimate near-match를 허용하도록 좁혀야 한다.
+예를 들어 검사 지점 이후 모든 관련 명령을 막았는데 실제로는 상태 조회나 preview까지 차단한다면 위험한 작업과 비슷해 보여도 정상 작업은 허용하도록 좁혀야 한다.
 
 ## 18.3 Broad trigger 재감사
 
 새 모델은 description을 해석하는 방식이나 Skill 선택 성향이 달라질 수 있다.
 
-이전 모델에서 recall을 높이기 위해 키워드를 많이 넣은 description이 새 모델에서는 false positive를 늘릴 수 있다.
+이전 모델에서 필요한 대상을 빠짐없이 고르는 비율(recall)을 높이기 위해 키워드를 많이 넣은 description이 새 모델에서는 필요 없는 Skill 호출(false positive)을 늘릴 수 있다.
 
-따라서 model upgrade 시 trigger corpus를 그대로 다시 실행한다.
+따라서 모델 업그레이드 시 호출 조건 평가 자료 모음을 그대로 다시 실행한다.
 
-중요한 것은 새 corpus만 만드는 것이 아니라 기존 회귀 사례를 보존하는 것이다.
+중요한 것은 새 평가 자료 모음만 만드는 것이 아니라 기존 회귀 사례를 보존하는 것이다.
 
 ## 18.4 Closing checklist
 
 과거에는 모델이 자주 완료 검증을 놓쳐 Skill 끝에 긴 체크리스트를 넣었을 수 있다.
 
-새 모델에서 동일 체크리스트가 반복 self-check와 불필요한 test를 만든다면 더 좁은 completion criterion으로 줄일 수 있다.
+새 모델에서 동일 체크리스트가 반복 자기 점검과 불필요한 테스트를 만든다면 더 좁은 완료 기준으로 줄일 수 있다.
 
 예:
 
-긴 열 항목 checklist보다
+열 항목의 긴 점검표보다
 
-> 요청 artifact가 존재하고 지정된 validator가 성공하면 완료한다.
+> 요청 산출물(artifact)이 존재하고 지정된 검사 도구가 성공하면 완료한다.
 
 한 문장이 더 안정적일 수 있다.
 
 ## 18.5 Overly Strict Boundary
 
-과거 failure를 막기 위해 특정 상황에서 무조건 stop하도록 만들었을 수 있다.
+과거 실패를 막기 위해 특정 상황에서 무조건 중단하도록 만들었을 수 있다.
 
-새 모델이 더 잘 판단할 수 있어도 stop rule은 계속 작업을 막는다.
+새 모델이 더 잘 판단할 수 있어도 중단 규칙은 계속 작업을 막는다.
 
 다음 질문을 한다.
 
-- 이 boundary가 실제 risk 때문인가.
+- 이 경계가 실제 위험 때문인가.
 - 아니면 과거 모델의 추론 한계 때문인가.
 - 값싼 검증으로 대체할 수 있는가.
-- stop 대신 fallback이나 escalation이 가능한가.
+- 중단 대신 대체 경로나 더 강한 검증이나 상위 판단 요청이 가능한가.
 
 ## 18.6 Portable instruction
 
-여러 모델을 쓰는 팀은 특정 모델에 최적화된 세세한 행동 규칙을 repository 공통 지침에 넣는 것을 조심해야 한다.
+여러 모델을 쓰는 팀은 특정 모델에 최적화된 세세한 행동 규칙을 저장소 공통 지침에 넣는 것을 조심해야 한다.
 
-공통 파일에는 project invariant와 task contract를 두고 model-specific workaround는 adapter layer나 별도 vendor file에 둔다.
+공통 파일에는 프로젝트의 불변 조건과 작업 규약을 두고 특정 모델에만 필요한 임시 우회책은 도구 간 차이를 연결하는 계층이나 별도 제품별 파일에 둔다.
 
-그러면 한 모델을 교체할 때 전체 repository instruction을 다시 쓸 필요가 줄어든다.
+그러면 한 모델을 교체할 때 전체 저장소 지침을 다시 쓸 필요가 줄어든다.
 
 ## 18.7 Host-Tolerated Invalidity 재검사
 
-새 host나 새 버전은 이전에 우연히 허용하던 잘못된 metadata를 더 엄격하게 거부할 수 있다.
+새 실행 도구나 새 버전은 이전에 우연히 허용하던 잘못된 메타데이터(metadata)를 더 엄격하게 거부할 수 있다.
 
-따라서 upgrade audit에는 syntax와 packaging smoke test도 포함한다.
+따라서 업그레이드 점검에는 문법과 패키지 구성 기본 동작 확인 테스트도 포함한다.
 
-- frontmatter field
-- allowed tools
-- matcher
-- path discovery
-- nested instruction
-- Skill registration
+- 문서 앞부분의 설정 영역(frontmatter) 필드
+- 허용 도구
+- 대상 선택 조건
+- 경로 탐색 방식
+- 하위 디렉터리 지침
+- Skill 등록
 
 동작하던 것이 표준에 맞았다는 뜻은 아니다.
 
@@ -95,28 +95,26 @@
 
 지침 삭제는 위험하게 느껴진다.
 
-하지만 삭제 전후를 같은 eval corpus로 비교하면 통제할 수 있다.
+하지만 삭제 전후를 같은 평가 자료 모음으로 비교하면 통제할 수 있다.
 
-- current
-- diet
-- structural
+- 현재
+- 지침을 줄인 조건(diet)
+- 규칙을 구조로 옮긴 조건(structural)
 
-세 조건을 비교하고 task success가 유지되면서 token, tool call, over-verification이 줄어드는지 본다.
+세 조건을 비교하고 작업 성공이 유지되면서 토큰, 도구 호출, 과도한 검증이 줄어드는지 본다.
 
-삭제는 감이 아니라 regression으로 수행할 수 있다.
+삭제는 감이 아니라 회귀 테스트로 수행할 수 있다.
 
 ## 18.9 모델 업그레이드 체크
 
 업그레이드마다 최소한 다음을 수행한다.
 
-1. root instruction에서 generic scaffolding 후보를 찾는다.
-2. Skill description corpus를 재실행한다.
-3. closing checklist와 recipe를 검토한다.
-4. safety gate의 near-match false positive를 확인한다.
-5. provider syntax와 packaging을 검증한다.
-6. baseline 대비 Skill의 추가 가치가 남아 있는지 본다.
+1. 루트 지침에서 일반적인 보조 지침 후보를 찾는다.
+2. Skill description 평가 자료 모음을 재실행한다.
+3. 마지막 점검표와 세부 절차를 검토한다.
+4. 안전 확인 단계에서 위험한 작업과 비슷해 보이는 정상 작업까지 잘못 막는지 확인한다.
+5. 제공 도구 문법과 패키지 구성을 검증한다.
+6. 비교 기준 대비 Skill의 추가 가치가 남아 있는지 본다.
 7. 제거한 지침도 회귀 기록을 남긴다.
 
-모델이 좋아질수록 지침도 같이 좋아져야 한다.
-
-그 방향은 대개 “더 많은 설명”보다 **더 적은 중복, 더 정확한 경계, 더 강한 evidence**다.
+모델이 좋아질수록 지침도 같이 좋아져야 한다. 그 방향은 대개 “더 많은 설명”보다 **더 적은 중복, 더 정확한 경계, 더 강한 검증 근거**다.

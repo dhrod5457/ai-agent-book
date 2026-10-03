@@ -2,7 +2,7 @@
 
 Skill이 올바르게 호출되었다고 해서 작업이 성공한 것은 아니다.
 
-Routing Eval이 “선택”을 본다면 Output Eval은 “선택된 뒤 실제로 무엇이 달라졌는가”를 본다.
+Skill 선택(Routing) 평가가 “선택”을 본다면 출력 평가는 “선택된 뒤 실제로 무엇이 달라졌는가”를 본다.
 
 ## 15.1 평가 목표를 분해한다
 
@@ -16,7 +16,7 @@ Routing Eval이 “선택”을 본다면 Output Eval은 “선택된 뒤 실제
 
 ### Process
 
-필요한 절차, tool, validation을 사용했는가.
+필요한 절차, 도구, 검증을 사용했는가.
 
 ### Style
 
@@ -24,85 +24,83 @@ Routing Eval이 “선택”을 본다면 Output Eval은 “선택된 뒤 실제
 
 ### Efficiency
 
-불필요한 tool call, reference read, 반복 검증이 없는가.
+불필요한 도구 호출, 참고 자료 읽기, 반복 검증이 없는가.
 
-업무에 따라 trace와 artifact를 별도 축으로 둘 수도 있다.
+업무에 따라 실행 기록과 산출물(artifact)을 별도 축으로 둘 수도 있다.
 
 ## 15.2 Self-report를 증거로 쓰지 않는다
 
-모델이 “검증했습니다”라고 말하는 것은 검증 증거가 아니다.
+모델이 “검증했습니다”라고 말하는 것만으로는 검증의 증거가 되지 않는다. 가능하면 실제 산출물을 확인한다.
 
-가능하면 실제 artifact를 본다.
-
-- test output
-- build result
+- 테스트 출력
+- 빌드 결과
 - git diff
 - 생성 파일
-- tool trace
-- event log
-- API response
-- 상태 identifier
+- 도구 실행 기록
+- 이벤트 기록
+- API 응답
+- 상태 식별자
 
 지침 시스템에서 가장 위험한 완료 조건은 모델의 자기 선언이다.
 
 ## 15.3 Deterministic grader
 
-기계적으로 판정 가능한 항목은 먼저 deterministic grader로 처리한다.
+기계적으로 판정 가능한 항목은 먼저 같은 조건에서 같은 결과를 내는 자동 채점 도구(deterministic grader)로 처리한다.
 
 예:
 
 - 파일이 생성됐는가.
-- JSON schema를 만족하는가.
+- JSON 데이터 구조 규칙(schema)을 만족하는가.
 - 금지 파일이 수정되지 않았는가.
-- test가 성공했는가.
-- 특정 command가 호출됐는가.
+- 테스트가 성공했는가.
+- 특정 명령이 호출됐는가.
 - 링크가 유효한가.
 
-이 영역에 LLM judge를 사용할 이유가 적다.
+이 영역에 LLM 평가자를 사용할 이유가 적다.
 
 ## 15.4 Rubric grader
 
-정확성, 설명 품질, trade-off 적절성처럼 기계적으로 바로 판정하기 어려운 것은 rubric 기반 평가가 필요할 수 있다.
+정확성, 설명 품질, 얻고 포기할 점을 따지는 판단(trade-off)의 적절성처럼 기계적으로 바로 판정하기 어려운 것은 평가 기준표(rubric) 기반 평가가 필요할 수 있다.
 
-좋은 rubric은 추상적인 “좋음”보다 관찰 가능한 기준을 가진다.
+좋은 평가 기준표는 추상적인 “좋음”보다 관찰 가능한 기준을 가진다.
 
 예:
 
 - 사용자가 요구한 세 가지 위험을 모두 다뤘는가.
-- 주장마다 실제 source가 연결되는가.
-- 대안의 조건과 trade-off가 구분되는가.
+- 주장마다 실제 자료가 연결되는가.
+- 대안의 조건과 서로 얻고 잃는 점이 구분되는가.
 
-LLM judge를 사용할 수 있지만 절대적인 truth로 취급하지 않는다.
+LLM 평가자를 사용할 수 있지만 절대적인 기준 정보로 취급하지 않는다.
 
 ## 15.5 Process goal의 함정
 
 Skill이 특정 절차를 강제한다고 해서 항상 그 절차를 많이 수행할수록 좋은 것은 아니다.
 
-예를 들어 “검증을 철저히 하라”는 Skill이 모든 변경에서 full regression을 실행하면 outcome은 좋아 보일 수 있지만 비용이 폭증한다.
+예를 들어 “검증을 철저히 하라”는 Skill이 모든 변경에서 전체 회귀 테스트를 실행하면 결과는 좋아 보일 수 있지만 비용이 폭증한다.
 
-따라서 process goal은 필요한 evidence와 최소 충분 경로를 함께 정의해야 한다.
+따라서 절차 목표는 필요한 검증 근거와 최소 충분 경로를 함께 정의해야 한다.
 
 ## 15.6 Evidence ladder
 
 검증 강도를 단계적으로 올린다.
 
-1. static validation
-2. focused unit test
-3. integration test
-4. acceptance test
-5. production mutation
+1. 정적 검증
+2. 변경 범위에 집중한 단위 테스트
+3. 통합 테스트
+4. 인수 테스트
+5. 운영 환경의 상태 변경
 
 항상 가장 강한 검증부터 실행하지 않는다.
 
-가장 싼 충분한 evidence를 먼저 사용하고, 불확실성이 남을 때 escalation한다.
+적은 비용으로 충분히 확인할 수 있는 근거를 먼저 사용하고, 불확실성이 남을 때 검증을 강화하거나 상위 판단을 요청한다.
 
 ## 15.7 Suspicious pass
 
 테스트가 너무 쉽게 통과하면 실제 실패를 감지하는지 확인할 수 있다.
 
-가능한 경우 조건을 의도적으로 깨뜨려 RED를 확인하고 복구 후 GREEN을 확인한다.
+가능한 경우 조건을 의도적으로 깨뜨려 실패(RED)를 확인하고 복구 후 성공(GREEN)을 확인한다.
 
-특히 새 validator나 Hook test는 “성공한다”만으로 충분하지 않다. 실제 위반을 잡는지 확인해야 한다.
+특히 새 검사 도구나 Hook 테스트는 “성공한다”만으로 충분하지 않다. 실제 위반을 잡는지 확인해야 한다.
 
 ## 15.8 Artifact와 Trace를 함께 남긴다
 
@@ -110,17 +108,17 @@ Skill이 특정 절차를 강제한다고 해서 항상 그 절차를 많이 수
 
 가능하면 다음을 보존한다.
 
-- input prompt
-- 적용된 instruction/Skill
-- tool calls
-- 읽은 reference
-- 실행 command
+- 입력 요청문
+- 적용된 지침과 Skill
+- 도구 호출
+- 읽은 참고 자료
+- 실행 명령
 - 변경 파일
-- test result
-- 최종 artifact
-- token/time metadata
+- 테스트 결과
+- 최종 산출물
+- 토큰 사용량과 시간 정보(metadata)
 
-이 기록은 나중에 instruction debt를 제거할 때도 중요하다.
+이 기록은 나중에 지침 유지보수 부담을 제거할 때도 중요하다.
 
 ## 15.9 Baseline
 
@@ -128,10 +126,10 @@ Skill이 있는 결과만 평가하면 Skill이 정말 필요한지 알 수 없�
 
 최소한 다음을 비교한다.
 
-- without Skill
-- with Skill
+- Skill 없는 조건
+- Skill 있는 조건
 
-더 엄격한 실험에서는 current와 proposed Skill, length-matched irrelevant instruction, 다른 model을 비교할 수 있다.
+더 엄격한 실험에서는 현재와 변경안 Skill, 길이는 같지만 작업과 무관한 지침, 다른 모델을 비교할 수 있다.
 
 모델 자체가 이미 잘하는 일을 Skill이 중복하고 있는지 확인해야 한다.
 
@@ -143,7 +141,7 @@ Skill이 있는 결과만 평가하면 Skill이 정말 필요한지 알 수 없�
 - 필요한 절차가 수행됐는가.
 - 불필요한 절차는 줄었는가.
 - 완료 증거가 있는가.
-- baseline보다 개선됐는가.
+- 비교 기준보다 개선됐는가.
 - 개선 비용은 합리적인가.
 
 Skill의 가치는 존재 여부가 아니라 **실제 행동과 결과의 차이**로 판단한다.

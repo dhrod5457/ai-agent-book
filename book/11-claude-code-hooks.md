@@ -2,54 +2,52 @@
 
 Claude Code Hook은 지침 파일 시스템에서 특별한 위치를 가진다.
 
-CLAUDE.md와 Skill은 모델 행동을 유도하지만, Hook은 특정 lifecycle event에 따라 실제 command나 검사를 실행할 수 있다.
+CLAUDE.md와 Skill은 모델 행동을 유도하지만, Hook은 특정 작업 생명주기의 사건에 따라 실제 명령이나 검사를 실행할 수 있다.
 
 따라서 Hook은 더 결정론적이면서 더 위험하다.
 
 ## 11.1 먼저 event를 좁힌다
 
-Hook을 만들 때 가장 먼저 정해야 하는 것은 “무슨 코드를 실행할까”가 아니다.
+Hook을 만들 때는 “무슨 코드를 실행할까”에 앞서 어떤 사건에서 이 검사가 필요한지 정한다.
 
-어떤 event에서 필요한가를 정한다.
+모든 도구 호출을 감시하는 Hook은 구현하기 쉽지만 비용이 크고 정상 작업을 잘못 차단하는 오탐(false positive)도 많다.
 
-모든 tool call을 감시하는 Hook은 구현하기 쉽지만 비용과 false positive가 크다.
-
-Edit나 Write 이후에만 필요한 검사라면 그 event에 좁힌다. 특정 tool namespace에만 필요한 정책이라면 해당 matcher에 제한한다.
+Edit나 Write 이후에만 필요한 검사라면 그 사건에 좁힌다. 특정 도구 이름 공간에만 필요한 정책이라면 해당 대상 선택 조건에 제한한다.
 
 ## 11.2 Matcher는 정책의 일부다
 
-matcher가 넓으면 좋은 script도 잘못된 순간에 실행된다.
+대상 선택 조건이 넓으면 좋은 스크립트도 잘못된 순간에 실행된다.
 
-반대로 matcher가 실제 tool semantics와 맞지 않으면 Hook이 존재하지만 아무것도 막지 못할 수 있다.
+반대로 대상 선택 조건이 도구의 실제 동작 의미와 맞지 않으면 Hook이 존재하지만 아무것도 막지 못할 수 있다.
 
-따라서 matcher는 다음을 검증한다.
+따라서 대상 선택 조건은 다음을 검증한다.
 
-- exact match인가 regex인가.
-- anchor가 필요한가.
-- 해당 event가 matcher를 지원하는가.
-- positive event에서 실행되는가.
-- near-match에서는 실행되지 않는가.
+- 완전 일치인가 정규식인가.
+- 문자열의 시작과 끝을 지정하는 기호가 필요한가.
+- 해당 사건이 대상 선택 조건을 지원하는가.
+- 실행되어야 하는 사건에서 실행되는가.
+- 비슷해 보이지만 대상이 아닌 사례에서는 실행되지 않는가.
 
-지원되지 않는 matcher가 조용히 무시되는 종류의 설정은 특히 위험하다.
+지원되지 않는 대상 선택 조건이 조용히 무시되는 종류의 설정은 특히 위험하다.
 
 ## 11.3 Hook은 사용자 권한으로 실행된다
 
-command Hook은 단순한 프롬프트보다 높은 신뢰 수준이 필요하다.
+명령 Hook은 단순한 프롬프트보다 높은 신뢰 수준이 필요하다.
 
-repository에서 전달되는 input을 그대로 shell에 넣지 않는다.
+저장소에서 전달되는 입력을 그대로 셸(shell)에 넣지 않는다.
 
 최소한 다음을 고려한다.
 
-- 입력 sanitize
-- 변수 quoting
-- path traversal
-- absolute path 사용
-- secret과 .git 같은 민감 경로
-- destructive command
-- timeout
-- workspace trust
+- 입력을 검증하고 안전하게 정리
+- 변수 따옴표 처리
+- 상위 경로를 거슬러 올라가는 접근
+- 절대 경로 사용
+- 비밀 정보와 .git 같은 민감 경로
+- 데이터를 삭제하거나 손상할 수 있는 명령
+- 시간 제한
+- 작업 공간의 신뢰 여부
 
-신뢰하지 않는 저장소의 committed Hook을 검토 없이 실행하는 것은 공급망 위험이 될 수 있다.
+신뢰하지 않는 저장소에 커밋된 Hook을 검토 없이 실행하는 것은 공급망 위험이 될 수 있다.
 
 ## 11.4 출력과 exit code도 계약이다
 
@@ -58,58 +56,58 @@ Hook의 성공과 실패가 소비자에게 어떻게 전달되는지 명확해�
 정해야 할 항목은 다음과 같다.
 
 - stdin 구조
-- exit code 의미
+- 종료 코드 의미
 - stdout과 stderr 의미
-- blocking 여부
+- 작업 차단 여부
 - 실패 메시지
 - 재실행 안전성
-- timeout
-- async 여부
+- 시간 제한
+- 비동기 실행 여부
 
 “실패하면 뭔가 출력한다”는 정도로는 운영하기 어렵다.
 
 ## 11.5 Idempotency
 
-async Hook이나 빠르게 반복되는 event에서는 동일 Hook이 여러 번 실행될 수 있다.
+비동기 실행 Hook이나 빠르게 반복되는 사건에서는 동일 Hook이 여러 번 실행될 수 있다.
 
-외부 side effect가 있다면 중복 실행에 안전해야 한다.
+외부 상태 변화(side effect)가 있다면 중복 실행에 안전해야 한다.
 
 예:
 
-- 같은 notification 여러 번 전송
-- 같은 test job 중복 실행
-- 같은 artifact 동시 갱신
+- 같은 알림 여러 번 전송
+- 같은 테스트 작업 중복 실행
+- 같은 산출물(artifact) 동시 갱신
 
-가능하면 Hook 자체나 호출 대상이 idempotent하게 설계되어야 한다.
+가능하면 Hook 자체나 호출 대상을 여러 번 실행해도 한 번 실행한 것과 결과가 같도록 설계해야 한다. 이를 멱등성(idempotency)이라고 한다.
 
 ## 11.6 Blocking Hook은 양쪽을 테스트한다
 
-차단 Hook을 만들면 deny case만 시험하기 쉽다.
+차단 Hook을 만들면 차단 사례만 시험하기 쉽다.
 
-하지만 실제 운영에서 더 위험한 것은 legitimate operation까지 막는 false positive다.
+하지만 실제 운영에서 더 위험한 것은 정상적으로 허용해야 하는 작업까지 잘못 막는 경우다.
 
 따라서 최소한 두 종류의 테스트가 필요하다.
 
 - 실제로 막아야 하는 명령
 - 비슷하지만 허용해야 하는 명령
 
-publish를 막는 Hook이라면 draft 생성, preview, status 조회 같은 near-match가 정상 허용되는지 확인한다.
+공개(publish)를 막는 Hook이라면 초안(draft) 생성, 미리 보기(preview), 상태 조회처럼 비슷해 보여도 차단 대상이 아닌 작업은 정상적으로 허용되는지 확인한다.
 
 ## 11.7 Equivalent bypass
 
 한 명령만 문자열로 막으면 같은 의미의 다른 명령으로 우회될 수 있다.
 
-정책이 “production publish를 막는다”라면 실제 위험 surface를 command-set이나 semantic category로 모델링하는 편이 낫다.
+정책이 “운영 환경에 공개하는 작업을 막는다”라면 실제 위험이 있는 명령 집합이나 의미별 범주를 정책에 반영하는 편이 낫다.
 
-가능하면 machine-readable allowlist 또는 deny class를 둔다.
+가능하면 기계가 읽을 수 있는 허용 목록 또는 차단 범주를 둔다.
 
 ## 11.8 Escape hatch
 
-좋은 enforcement는 합법적인 예외 처리 경로도 가진다.
+좋은 규칙 강제 적용은 합법적인 예외 처리 경로도 가진다.
 
 예외가 가능한 정책을 절대 차단으로 만들면 사용자는 Hook을 비활성화하는 더 위험한 방법을 택할 수 있다.
 
-승인 토큰, explicit override, 별도 관리 절차처럼 통제된 escape hatch를 설계한다.
+승인 토큰, 명시적인 예외 승인, 별도 관리 절차처럼 통제된 예외 처리 경로를 설계한다.
 
 ## 11.9 Hook을 만들지 말아야 할 때
 
@@ -119,7 +117,7 @@ publish를 막는 Hook이라면 draft 생성, preview, status 조회 같은 near
 - 코드 가독성
 - 다양한 예외가 있는 품질 판단
 - 고비용이어서 항상 실행할 수 없는 분석
-- 사람의 trade-off 판단이 핵심인 기준
+- 사람이 얻고 포기할 점(trade-off)을 따져 보는 판단이 핵심인 기준
 
 Hook은 강하기 때문에 좁게 사용해야 한다.
 

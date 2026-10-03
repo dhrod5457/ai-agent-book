@@ -9,7 +9,7 @@ Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot 같은 AI 코딩 도구�
 - 어떤 내용은 루트 지침에 남겨야 하는가.
 - 어떤 내용은 경로별 Rule로 내려야 하는가.
 - 어떤 절차는 Skill로 만들어야 하는가.
-- 어떤 규칙은 자연어가 아니라 Hook, lint, type, schema, CI로 강제해야 하는가.
+- 어떤 규칙은 자연어가 아니라 Hook, 코드 검사, 타입, 데이터 구조 규칙(schema), CI로 강제해야 하는가.
 - Skill description은 어떻게 작성해야 정확히 선택되는가.
 - 지침 파일의 품질은 어떻게 테스트할 것인가.
 - 모델과 도구가 바뀌면 무엇을 삭제해야 하는가.
