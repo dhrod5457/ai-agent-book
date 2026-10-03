@@ -16,7 +16,9 @@ Experiment B의 첫 비교는 다음 두 조건만 다룬다.
 - `rules.json`: global/backend/frontend/deploy/docs 규칙 집합
 - `pilot-tasks.json`: 서로 독립적인 12개 calibration task
 - `scope_harness.py`: synthetic repo materialize + deterministic grader
+- `phase_b_runner.py`: Claude Code/Codex fresh-workspace S0/S1 실행 및 결과 집계
 - `test_scope_harness.py`: variant parity와 grader 회귀 테스트
+- `test_phase_b_runner.py`: host command/permission contract와 summary 회귀 테스트
 
 ## 핵심 통제 조건
 
@@ -143,3 +145,69 @@ python3 scope_harness.py grade \
 6. 마지막에 S3 procedure-as-Skill 추가
 
 첫 host는 AGENTS.md nested semantics가 명확한 Codex 또는 Claude Code가 적합하다.
+
+
+## Phase B runner
+
+CLI 설치/버전만 확인:
+
+```bash
+python3 phase_b_runner.py --host claude --out /tmp/scope-claude --preflight-only
+python3 phase_b_runner.py --host codex --out /tmp/scope-codex --preflight-only
+```
+
+3개 smoke task만 S0/S1에 각각 1회:
+
+```bash
+python3 phase_b_runner.py \
+  --host claude \
+  --model <exact-model-id> \
+  --task B-01 \
+  --task F-01 \
+  --task DOC-01 \
+  --runs 1 \
+  --out runs/claude-smoke
+```
+
+전체 calibration:
+
+```bash
+python3 phase_b_runner.py \
+  --host codex \
+  --model <exact-model-id> \
+  --runs 1 \
+  --out runs/codex-calibration
+```
+
+runner는 task마다 fresh synthetic workspace를 만들고 task의 `working_dir`에서 host를 시작한다.
+
+Claude Code는 현재 built-in `agents-md`를 다음 모드로 강제한다.
+
+```text
+claude-md-or-agents-md
+```
+
+fixture에는 CLAUDE.md가 없으므로 root AGENTS와, 하위 파일을 Read할 때 해당 nested AGENTS가 적용된다.
+
+Claude permission boundary:
+
+- edit: acceptEdits
+- permission prompt: none
+- Bash allow: fixture verifier, git status/diff
+- MCP: deny
+
+Codex permission boundary:
+
+- sandbox: workspace-write
+- approval: never
+- 기본 sandbox network 정책 유지
+
+실제 사용자 repository는 agent workspace로 사용하지 않는다.
+
+### Gemini가 아직 Phase B에 없는 이유
+
+Gemini `auto_edit`는 edit tool만 자동 승인하고 shell validation은 별도 승인 대상이다.
+`yolo`로 우회하면 실험 자동화는 쉽지만 권한 조건 자체가 Claude/Codex보다 넓어진다.
+
+따라서 Phase B v0.1에서는 Claude/Codex로 S0/S1 fixture를 먼저 안정화하고,
+Gemini는 verifier command만 허용하는 Policy Engine profile을 추가한 뒤 같은 실험에 넣는다.
