@@ -119,6 +119,10 @@ public final class OrderService {
     public String findOrder(String id) {
         return repository.findById(id);
     }
+
+    public String normalizeStatus(String status) {
+        return status == null ? "UNKNOWN" : status;
+    }
 }
 """,
         "backend/src/main/java/com/example/order/OrderRepository.java": """package com.example.order;
