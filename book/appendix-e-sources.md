@@ -2,7 +2,7 @@
 
 기준일: 2026-09-30
 
-본문은 제품 공식 문서, 공개 규격, 공식 저장소, empirical study, 공개 Skill 사례를 바탕으로 작성했다.
+본문은 제품 공식 문서, 공개 규격, 공식 저장소, 실증 연구, 공개 Skill 사례를 바탕으로 작성했다.
 
 상세 조사 메모와 원문 링크는 research/instruction-files 디렉터리에 보존한다.
 
@@ -17,8 +17,8 @@ https://agentskills.io/specification
 - SKILL.md 구조
 - name/description 제약
 - scripts/references/assets
-- progressive disclosure
-- validation
+- 필요한 정보를 단계적으로 공개하는 방식(progressive disclosure)
+- 검증
 
 ## E.2 Anthropic / Claude
 
@@ -36,13 +36,13 @@ https://code.claude.com/docs/
 
 핵심 사용 영역:
 
-- context budget
-- Skill discovery
-- what + when description
-- progressive disclosure
+- 모델에 제공할 정보의 분량 한도
+- Skill 찾기
+- 무엇을 하는지와 언제 쓰는지를 설명하는 description
+- 필요한 정보를 단계적으로 공개하는 방식
 - scripts
 - Hooks
-- workspace trust
+- 작업 공간의 신뢰 여부
 
 ## E.3 OpenAI
 
@@ -54,9 +54,9 @@ Published: 2026-09-11
 
 핵심 사용 영역:
 
-- instruction diet
+- 지침 분량 줄이기
 - 오래된 AGENTS.md 감사
-- 과도한 scaffolding 제거
+- 모델의 부족한 부분을 보완하던 과도한 보조 지침(scaffolding) 제거
 - Skill description 축소와 재평가
 
 ### Testing Agent Skills Systematically with Evals
@@ -68,10 +68,10 @@ Published: 2026-01-22
 핵심 사용 영역:
 
 - outcome/process/style/efficiency
-- captured run
-- deterministic checks
-- rubric grading
-- baseline comparison
+- 실행 기록 수집
+- 기계적으로 판정하는 검사
+- 평가 기준표(rubric)에 따른 채점
+- 기준 결과와의 비교
 
 ## E.4 Cursor
 
@@ -93,11 +93,11 @@ https://github.com/cursor/plugins/tree/main/pstack
 
 중점 분석 파일:
 
-- authoring-a-skill playbook
+- authoring-a-skill 실무 절차서
 - tdd Skill
 - how / why Skills
 - principle-encode-lessons-in-structure
-- eval playbook
+- 평가 실무 절차서
 
 ## E.5 Gemini CLI
 
@@ -117,10 +117,10 @@ https://geminicli.com/docs/cli/skills-best-practices/
 
 - discovery/activation
 - .gemini/skills
-- .agents/skills alias
-- progressive disclosure
-- degree of freedom
-- deterministic scripts
+- .agents/skills 별칭
+- 필요한 정보를 단계적으로 공개하는 방식
+- 자유도
+- 같은 조건에서 같은 결과를 내는 스크립트
 
 ## E.6 GitHub Copilot
 
@@ -138,7 +138,7 @@ https://docs.github.com/en/copilot/how-tos/configure-custom-instructions-in-your
 - .github/instructions
 - applyTo
 - AGENTS.md
-- surface별 지원 차이
+- 적용 영역별 지원 차이
 
 ## E.7 공개 Skill 사례
 
@@ -160,7 +160,7 @@ https://docs.github.com/en/copilot/how-tos/configure-custom-instructions-in-your
 - Firecrawl CLI Skills
 - Google Stitch Skills
 
-각 사례의 star 수나 유명세는 품질 점수가 아니라 관찰 표본을 고르기 위한 signal로만 사용했다.
+각 사례의 별표 즐겨찾기 수나 유명세는 품질 점수가 아니라 관찰 표본을 고르기 위한 판단 신호로만 사용했다.
 
 ## E.8 리서치 문서
 
@@ -203,9 +203,7 @@ https://docs.github.com/en/copilot/how-tos/configure-custom-instructions-in-your
 1. 제품 공식 문서와 공식 블로그
 2. 공개 표준 명세
 3. 공식 저장소의 실제 지침 파일
-4. empirical study와 preprint
+4. 실증 연구와 정식 출판 전 논문
 5. 커뮤니티 자료는 보조 사례
 
-제품 문법은 빠르게 변한다.
-
-따라서 본문의 설계 원리와 이 부록의 현재 문법을 분리해서 읽어야 한다.
+제품 문법은 빠르게 변한다. 따라서 본문의 설계 원리와 이 부록의 현재 문법을 분리해서 읽어야 한다.

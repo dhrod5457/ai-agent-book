@@ -6,7 +6,7 @@
 
 ## 13.1 거대한 root instruction
 
-처음에는 root 파일 하나가 편하다.
+처음에는 최상위 디렉터리 파일 하나가 편하다.
 
 프로젝트 구조, Java 규칙, TypeScript 규칙, 배포 절차, 문서 규칙, 테스트 정책을 한 곳에서 찾을 수 있다.
 
@@ -14,21 +14,21 @@
 
 ### 리팩터링
 
-root에는 repo identity, 공통 명령, 전역 invariant, 하위 지침으로 가는 pointer만 남긴다.
+최상위 디렉터리에는 저장소의 성격, 공통 명령, 전역 불변 조건, 하위 지침으로 가는 참조 링크만 남긴다.
 
-backend와 frontend 규칙은 nested instruction이나 path rule로 내린다.
+백엔드와 프런트엔드 규칙은 하위 디렉터리 지침이나 경로별 규칙으로 내린다.
 
-release, migration 같은 절차는 Skill로 옮긴다.
+릴리스와 데이터베이스를 변경하거나 이전하는 마이그레이션(migration) 같은 절차는 Skill로 옮긴다.
 
-기계적 검사는 validator, lint, Hook으로 옮긴다.
+기계적 검사는 검사 도구, 코드 검사, Hook으로 옮긴다.
 
-좋은 결과는 root 줄 수가 줄었다는 사실이 아니라 unrelated task에서 불필요한 규칙이 사라졌다는 것이다.
+좋은 결과는 최상위 지침 파일의 줄 수가 줄었다는 사실이 아니라 관련 없는 작업에서 불필요한 규칙이 사라졌다는 것이다.
 
 ## 13.2 Broad auto-trigger Skill
 
 나쁜 description:
 
-> backend 개발과 데이터베이스 작업에 사용한다.
+> 백엔드 개발과 데이터베이스 작업에 사용한다.
 
 이 Skill은 너무 많은 요청에서 후보가 된다.
 
@@ -36,41 +36,35 @@ release, migration 같은 절차는 Skill로 옮긴다.
 
 도메인이 아니라 사건을 쓴다.
 
-> 새로운 migration을 추가하거나 기존 migration을 변경하고 rollout 위험을 검토할 때 사용한다.
+> 새로운 마이그레이션을 추가하거나 기존 마이그레이션을 변경하고 순차 적용 위험을 검토할 때 사용한다.
 
-그리고 가장 가까운 adjacent negative를 둔다.
+그리고 가장 혼동하기 쉽지만 호출하면 안 되는 인접 사례를 둔다.
 
-> 단순 query 작성이나 ORM model 탐색에는 사용하지 않는다.
+> 단순 질의 작성이나 ORM 모델 탐색에는 사용하지 않는다.
 
-변경 후 positive와 negative corpus로 trigger를 다시 측정한다.
+변경 후 호출되어야 하는 사례와 호출되면 안 되는 사례 평가 자료 모음으로 호출 조건(trigger)을 다시 측정한다.
 
 ## 13.3 Procedure와 state owner 충돌
 
 prepare, validate, deploy Skill이 모두 같은 상태를 바꾸면 책임이 흐려진다.
 
-예를 들어 validation Skill이 실제 배포 상태까지 바꾸거나, prepare Skill이 승인까지 암묵적으로 처리하면 handoff가 무너진다.
+예를 들어 검증 Skill이 실제 배포 상태까지 바꾸거나, prepare Skill이 승인까지 암묵적으로 처리하면 인계가 무너진다.
 
 ### 리팩터링
 
-각 Skill의 requires-state와 owns-state를 구분한다.
+각 Skill이 시작할 때 필요한 상태(requires-state)와 직접 변경할 책임이 있는 상태(owns-state)를 구분한다. prepare는 산출물(artifact) 준비까지, validate는 검증 결과 생성까지, deploy는 승인된 산출물의 실제 상태 변경까지 맡는다.
 
-prepare는 artifact 준비까지.
-
-validate는 검증 결과 생성까지.
-
-deploy는 승인된 artifact의 mutation까지.
-
-필요하면 state transition을 machine-readable하게 만들어 validator가 exclusive owner 충돌을 잡게 한다.
+필요하면 상태 전이를 기계가 읽을 수 있는 형식으로 만들어 검사 도구가 단독 변경 책임자 충돌을 잡게 한다.
 
 ## 13.4 Cached CLI Manual
 
-Skill 본문에 CLI flag 전체를 복제하면 시간이 지날수록 실제 도구와 어긋난다.
+Skill 본문에 CLI 명령 옵션 전체를 복제하면 시간이 지날수록 실제 도구와 어긋난다.
 
 ### 리팩터링
 
-설치된 버전의 help, generated schema, 공식 문서를 canonical source로 둔다.
+설치된 버전의 help, 자동 생성된 데이터 구조 규칙(schema), 공식 문서를 기준 원본(canonical source)으로 둔다.
 
-Skill은 “어떤 옵션이 있다”를 모두 외우게 하지 않고 “어떤 source에서 현재 옵션을 확인할지”를 가르친다.
+Skill은 “어떤 옵션이 있다”를 모두 외우게 하지 않고 “어떤 자료에서 현재 옵션을 확인할지”를 가르친다.
 
 ## 13.5 Prose-only Safety Gate
 
@@ -78,101 +72,99 @@ Skill은 “어떤 옵션이 있다”를 모두 외우게 하지 않고 “어�
 
 > IMPORTANT: 사용자 승인 없이는 절대 publish하지 않는다.
 
-문제는 다른 tool call이나 다른 Skill이 동일 mutation을 수행할 수 있다는 것이다.
+문제는 다른 도구 호출이나 다른 Skill이 동일 상태 변경을 수행할 수 있다는 것이다.
 
 ### 리팩터링
 
 의도 경계는 Skill에 남긴다.
 
-실제 publish surface는 permission과 Hook으로 보강한다.
+실제 publish 적용 영역은 권한과 Hook으로 보강한다.
 
-deny test와 near-match allow test를 둔다.
+차단되어야 하는 사례의 테스트와 비슷해 보여도 허용해야 하는 작업의 테스트를 둔다.
 
-목표는 더 많이 차단하는 것이 아니다. 실제 위험 action만 정확히 차단하는 것이다.
+목표는 더 많이 차단하는 것이 아니다. 실제 위험한 행동만 정확히 차단하는 것이다.
 
 ## 13.6 Deprecated Skill의 full copy
 
-old-setup과 new-setup이 모두 전체 setup logic을 가지면 bugfix와 version policy가 갈라진다.
+old-setup과 new-setup이 모두 전체 설정 처리 로직을 가지면 버그 수정과 버전 정책이 갈라진다.
 
 ### 리팩터링
 
-old entrypoint는 compatibility alias로만 남긴다.
+기존 시작점은 호환성을 유지하는 별칭으로만 남긴다.
 
-자동 선택에서는 제외하고, 명시적으로 old name을 호출한 경우 canonical new Skill로 위임한다.
+자동 선택에서는 제외하고, 명시적으로 기존 이름을 호출한 경우 기준이 되는 새 Skill로 위임한다.
 
-logic owner는 하나만 둔다.
+처리 로직 관리 책임자는 하나만 둔다.
 
 ## 13.7 Eval contamination
 
-개발 중인 candidate Skill과 사용자 환경의 installed Skill이 같은 이름으로 동시에 보이면 trigger eval이 잘못된 대상을 평가할 수 있다.
+개발 중인 평가 대상 Skill과 사용자 환경의 설치된 Skill이 같은 이름으로 동시에 보이면 호출 조건 평가가 잘못된 대상을 평가할 수 있다.
 
 ### 리팩터링
 
-- candidate identity를 고정한다.
-- installed duplicate를 비활성화한다.
-- available Skill inventory를 기록한다.
-- fresh session을 사용한다.
-- activation source를 확인한다.
+- 평가 대상 식별 정보를 고정한다.
+- 설치된 중복 항목을 비활성화한다.
+- 사용 가능한 Skill 목록을 기록한다.
+- 새 세션을 사용한다.
+- 실제로 활성화된 Skill의 출처를 확인한다.
 
-Eval도 환경 격리가 필요하다.
+평가도 환경 격리가 필요하다.
 
 ## 13.8 Latest-Version Override
 
 “항상 최신 API를 사용한다”는 지침은 기존 프로젝트를 깨뜨릴 수 있다.
 
-프로젝트가 특정 SDK, runtime, compatibility date에 고정되어 있을 수 있기 때문이다.
+프로젝트가 특정 SDK, 실행 환경, 호환성 날짜에 고정되어 있을 수 있기 때문이다.
 
 ### 리팩터링
 
-source 우선순위를 둔다.
+자료 우선순위를 둔다.
 
-1. user target
-2. project target
-3. installed/generated source
-4. current official source
-5. dated fallback
+1. 사용자가 지정한 대상
+2. 프로젝트가 지정한 대상
+3. 설치된 패키지와 자동 생성된 자료
+4. 현재 공식 자료
+5. 날짜가 기록된 대체 자료
 
 새 프로젝트 추천과 기존 프로젝트 리뷰를 같은 기준으로 처리하지 않는다.
 
 ## 13.9 Duplicated Domain Tokens
 
-디자인 시스템에 색상과 radius가 있는데 Skill에도 같은 값이 복제되어 있으면 어느 쪽이 source of truth인지 모호해진다.
+디자인 시스템에 색상과 모서리의 둥근 정도(radius)가 있는데 Skill에도 같은 값이 복제되어 있으면 어느 쪽이 판단의 기준이 되는 원본인지 모호해진다.
 
-DB schema, generated types, CI threshold에서도 같은 문제가 생긴다.
+DB 데이터 구조 규칙, 자동 생성된 타입, CI 기준값에서도 같은 문제가 생긴다.
 
 ### 리팩터링
 
-값을 복제하지 않는다.
-
-Skill에는 canonical source를 읽는 절차만 둔다.
+값을 복제하지 않고, Skill에는 기준 원본을 읽는 절차만 둔다.
 
 ## 13.10 Generic Process in Domain Skill
 
-Cloud, DB, frontend 같은 domain Skill에 다음이 가득할 수 있다.
+Cloud, DB, 프런트엔드 같은 분야 Skill에 다음이 가득할 수 있다.
 
 - 계획해라.
-- clean code를 써라.
+- 읽고 유지보수하기 좋은 코드를 써라.
 - 테스트해라.
 - 리뷰해라.
 
-이런 일반론은 domain Skill이 없어도 수행 가능한 경우가 많다.
+이런 일반론은 분야 Skill이 없어도 수행 가능한 경우가 많다.
 
 ### 리팩터링
 
-domain-specific surprise만 남긴다.
+해당 분야에서 놓치기 쉬운 특수한 사항만 남긴다.
 
 예:
 
-- 이 runtime에서 자주 발생하는 lifecycle 함정
-- 이 플랫폼의 binding drift
-- 이 DB migration의 rollout 위험
-- 이 API의 version target 규칙
+- 이 실행 환경에서 자주 발생하는 작업 생명주기 함정
+- 이 플랫폼의 연결 설정과 실제 상태의 어긋남
+- 이 DB 마이그레이션의 순차 적용 위험
+- 이 API의 버전 대상 규칙
 
-generic engineering process는 상위 공통 규칙이나 모델 기본 능력에 맡긴다.
+일반적인 개발 절차는 상위 공통 규칙이나 모델 기본 능력에 맡긴다.
 
 ## 13.11 Missing Completion Bound
 
-나쁜 workflow:
+나쁜 작업 절차(workflow):
 
 1. 검색한다.
 2. 분석한다.
@@ -185,7 +177,7 @@ generic engineering process는 상위 공통 규칙이나 모델 기본 능력�
 
 관측 가능한 완료 조건을 둔다.
 
-> 요청한 source set이 수집되고, 답변이 저장된 근거를 참조하며, blocking source gap이 없으면 완료한다.
+> 요청한 자료 묶음이 수집되고, 답변이 저장된 근거를 참조하며, 완료를 막는 자료 누락이 없으면 완료한다.
 
 좁은 Skill은 Done when 한 문장만으로도 충분할 수 있다.
 
@@ -193,14 +185,14 @@ generic engineering process는 상위 공통 규칙이나 모델 기본 능력�
 
 리팩터링 후 저장소는 다음 책임을 갖는다.
 
-- root instruction: 공통 identity와 invariant
-- nested instruction/path Rule: local invariant
-- Skill: task-specific procedure
-- reference: 조건부 상세 지식
-- script: 반복 결정론 절차
-- Hook: lifecycle enforcement
-- CI/validator: structural correctness
-- eval: routing과 semantic behavior
+- 루트 지침: 공통적인 저장소 성격과 불변 조건
+- 하위 디렉터리 지침과 경로별 Rule: 해당 영역의 불변 조건
+- Skill: 특정 업무의 절차
+- 참고 자료: 조건부 상세 지식
+- 스크립트: 같은 조건에서 같은 결과를 내는 반복 절차
+- Hook: 작업 생명주기 규칙 강제 적용
+- CI/validator: 구조의 올바름
+- 평가: Skill 선택(routing)과 의미에 맞는 동작
 
 이 장의 핵심은 “더 좋은 문장”이 아니다.
 

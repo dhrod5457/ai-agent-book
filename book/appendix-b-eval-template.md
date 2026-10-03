@@ -24,7 +24,7 @@
 
 ### Process
 
-반드시 수행되어야 하는 절차나 tool 사용이 있는가.
+반드시 수행되어야 하는 절차나 도구 사용이 있는가.
 
 ### Style
 
@@ -32,11 +32,11 @@
 
 ### Efficiency
 
-불필요한 tool call, reference read, 전체 회귀, 반복 탐색의 허용 범위는 무엇인가.
+불필요한 도구 호출, 참고 자료 읽기, 전체 회귀, 반복 탐색의 허용 범위는 무엇인가.
 
 ## B.3 Trigger Corpus
 
-각 case는 다음 필드를 가진다.
+각 사례는 다음 필드를 가진다.
 
 - id
 - class
@@ -58,7 +58,7 @@
 
 ## B.4 반복 실행
 
-중요한 case는 한 번만 실행하지 않는다.
+중요한 사례는 한 번만 실행하지 않는다.
 
 기록 항목:
 
@@ -75,15 +75,15 @@
 
 ### Accuracy
 
-기대 route와 실제 route가 일치한 비율.
+기대했던 선택과 실제 선택이 일치한 비율.
 
 ### False Positive Rate
 
-none 또는 adjacent negative에서 잘못 호출된 비율.
+선택 없음 또는 혼동하기 쉽지만 호출하면 안 되는 사례에서 잘못 호출된 비율.
 
 ### Collision Error Rate
 
-routing pair에서 인접 Skill을 잘못 선택한 비율.
+혼동하기 쉬운 Skill 쌍에서 인접 Skill을 잘못 선택한 비율.
 
 ### Abstention Accuracy
 
@@ -91,7 +91,7 @@ Skill이 필요 없을 때 호출하지 않은 비율.
 
 ### Run Consistency
 
-동일 prompt 반복 실행에서 동일 route가 나온 비율.
+동일 요청문 반복 실행에서 동일한 선택이 나온 비율.
 
 ## B.6 Output Checks
 
@@ -132,11 +132,7 @@ Skill이 필요 없을 때 호출하지 않은 비율.
 
 ## B.8 Blinding
 
-가능하면 candidate에게 eval 목적을 노출하지 않는다.
-
-judge에게 current/proposed label을 숨긴다.
-
-동일 task, 동일 repository state, 동일 Skill inventory를 사용한다.
+가능하면 평가 대상에게 평가 목적을 노출하지 않고, 평가자에게도 어느 쪽이 현재 버전이고 변경안인지 숨긴다. 비교에는 동일한 작업, 저장소 상태, Skill 목록을 사용한다.
 
 ## B.9 Artifact Preservation
 
@@ -160,26 +156,26 @@ judge에게 current/proposed label을 숨긴다.
 
 예를 들어 description 축소가 성공이라고 하려면 보통 다음을 함께 본다.
 
-- metadata token 감소
-- accuracy 비열화 없음
-- 특정 Skill recall 급락 없음
-- false positive 증가 없음
+- 메타데이터(metadata) 토큰 감소
+- 정확성이 떨어지지 않음
+- 특정 Skill을 필요할 때 빠짐없이 고르는 비율(recall)이 급격히 떨어지지 않음
+- 불필요한 Skill 호출(false positive) 증가 없음
 
-Boundary-aware description이 개선이라고 하려면 다음을 함께 본다.
+인접한 작업과의 경계를 반영한 description이 개선이라고 하려면 다음을 함께 본다.
 
-- overall accuracy 유지 또는 개선
-- collision error 감소
-- false positive 증가 없음
+- 전체 정확성 유지 또는 개선
+- 잘못된 Skill 선택 감소
+- 불필요한 Skill 호출 증가 없음
 
 ## B.11 Regression Loop
 
 실제 운영 실패가 발생하면:
 
-1. 실패 prompt와 trace를 저장한다.
-2. 가장 가까운 기존 corpus class를 정한다.
+1. 실패 요청문과 실행 기록을 저장한다.
+2. 가장 가까운 기존 평가 자료의 분류(class)를 정한다.
 3. 수정 전 재현한다.
 4. 지침을 변경한다.
-5. 해당 case와 전체 regression을 실행한다.
+5. 해당 사례와 전체 회귀 테스트를 실행한다.
 6. 결과와 원인을 기록한다.
 
-이 과정을 통해 correction이 일회성 문장 추가가 아니라 재발 방지 자산이 된다.
+이 과정을 통해 수정 요청이 일회성 문장 추가가 아니라 재발 방지 자산이 된다.

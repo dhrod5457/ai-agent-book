@@ -1,6 +1,6 @@
 # 19장. 지침 파일 리뷰 프로세스
 
-지침 파일을 소프트웨어 artifact로 본다면 변경에도 리뷰 프로세스가 필요하다.
+지침 파일을 소프트웨어 산출물(artifact)로 본다면 변경에도 리뷰 프로세스가 필요하다.
 
 중요한 것은 거대한 승인 절차를 만드는 것이 아니다.
 
@@ -11,41 +11,41 @@
 첫 질문은 문장 내용이 아니라 변경 이유다.
 
 - 실제 실패 사례가 있었는가.
-- 사용자 correction이 있었는가.
-- 모델이나 host가 바뀌었는가.
+- 사용자 수정 요청이 있었는가.
+- 모델이나 실행 도구가 바뀌었는가.
 - 제품 문법이 바뀌었는가.
-- 새로운 workflow가 생겼는가.
+- 새로운 작업 절차(workflow)가 생겼는가.
 - 단순히 좋아 보이는 규칙을 추가하려는가.
 
-실패 근거가 없는 일반론은 상시 instruction에 추가하기 전에 더 엄격하게 본다.
+실패 근거가 없는 일반론은 상시 지침에 추가하기 전에 더 엄격하게 본다.
 
 ## 19.2 Scope
 
 다음 질문은 어디에 적용해야 하는가다.
 
-- repository 전체
-- 특정 directory
-- 특정 file type
-- 특정 task
-- 특정 side effect
-- 특정 provider
+- 저장소 전체
+- 특정 디렉터리
+- 특정 파일 유형
+- 특정 작업
+- 특정 외부 상태 변화(side effect)
+- 특정 제공 도구
 
-Scope를 결정하기 전에는 문장을 쓰지 않는 편이 좋다.
+적용 범위를 결정하기 전에는 문장을 쓰지 않는 편이 좋다.
 
 ## 19.3 Canonical source
 
-지침이 의존하는 사실의 owner를 확인한다.
+지침이 의존하는 사실의 관리 책임자를 확인한다.
 
-- code
-- config
-- schema
-- generated type
+- 코드
+- 설정
+- 데이터 구조 규칙(schema)
+- 자동 생성된 타입
 - CLI help
-- official docs
-- runtime state
-- Skill reference
+- 공식 문서
+- 실행 환경 상태
+- Skill 참고 자료
 
-이미 canonical source가 있으면 값을 복제하지 않는다.
+이미 기준 원본(canonical source)이 있으면 값을 복제하지 않는다.
 
 ## 19.4 Behavior change
 
@@ -53,61 +53,53 @@ Scope를 결정하기 전에는 문장을 쓰지 않는 편이 좋다.
 
 예:
 
-- migration과 query 요청이 같은 Skill로 라우팅되던 것을 분리한다.
-- frontend 작업에서 backend test 지침이 노출되지 않게 한다.
-- publish 전에 approval state를 Hook에서 확인한다.
-- stale CLI option table을 제거하고 runtime help를 사용한다.
+- 데이터베이스를 변경하거나 이전하는 마이그레이션(migration)과 질의 요청이 같은 Skill로 라우팅되던 것을 분리한다.
+- 프런트엔드 작업에서 백엔드 테스트 지침이 노출되지 않게 한다.
+- publish 전에 승인 상태를 Hook에서 확인한다.
+- 오래된 CLI 옵션 표를 제거하고 실행 중인 도구의 도움말을 사용한다.
 
-지침 변경은 기대 행동의 before/after로 설명할 수 있어야 한다.
+지침 변경은 기대 행동의 변경 전후로 설명할 수 있어야 한다.
 
 ## 19.5 Structural verification
 
 기계적으로 검증 가능한 부분을 먼저 확인한다.
 
-- parse
-- required fields
-- local references
-- script paths
-- registration
-- matcher syntax
-- Hook test
-- state metadata
+- 구문 분석
+- 필수 필드
+- 저장소 안의 참조
+- 스크립트 경로
+- 등록
+- 대상 선택 조건의 문법
+- Hook 테스트
+- 상태 메타데이터(metadata)
 
 이 검사는 빠르고 결정론적이어야 한다.
 
 ## 19.6 Semantic Eval
 
-그 다음 의미와 행동을 평가한다.
-
-Skill description 변경이면 positive, negative, routing pair를 실행한다.
-
-본문 변경이면 output과 process를 본다.
-
-scope 변경이면 irrelevant-rule leakage와 필요한 rule miss를 본다.
-
-model upgrade면 baseline과 current를 다시 비교한다.
+그다음에는 의미와 행동을 평가한다. Skill의 description을 바꿨다면 호출해야 하는 사례와 호출하면 안 되는 사례, 혼동하기 쉬운 Skill 쌍을 시험한다. 본문을 바꿨다면 출력과 절차를, 적용 범위를 바꿨다면 관련 없는 규칙의 노출과 필요한 규칙의 누락을 살핀다. 모델을 업그레이드했다면 비교 기준과 현재 결과를 다시 비교한다.
 
 ## 19.7 Risk
 
 지침 변경이 다음을 바꾸는지 확인한다.
 
-- tool permission
-- production side effect
-- secret access
+- 도구 권한
+- 운영 환경의 외부 상태 변화
+- 비밀 정보 접근
 - 외부 비용
 - 데이터 삭제
 - 사용자 승인 경계
 - 운영 시간
 
-Markdown 변경이라고 risk가 낮다고 가정하지 않는다.
+Markdown 변경이라고 위험이 낮다고 가정하지 않는다.
 
 ## 19.8 Portability
 
-공통 지침인지 provider-specific instruction인지 명시한다.
+공통 지침인지 특정 제공 도구에만 적용되는 지침인지 명시한다.
 
-Portable principle과 vendor syntax를 한 문단에 섞지 않는다.
+여러 도구에서 통하는 원칙과 제품별 문법을 한 문단에 섞지 않는다.
 
-도구별 동작이 다르면 adapter 파일에서 처리한다.
+도구별 동작이 다르면 도구별 차이를 연결하는 파일에서 처리한다.
 
 ## 19.9 Removal condition
 
@@ -115,27 +107,27 @@ Portable principle과 vendor syntax를 한 문단에 섞지 않는다.
 
 예:
 
-- 다음 major model에서 재평가
-- upstream bug 수정 시 삭제
-- validator가 배포되면 prose checklist 축소
-- legacy version 지원 종료 시 alias 제거
-- 해당 directory 제거 시 path rule 삭제
+- 다음 주요 새 모델에서 재평가
+- 상위 프로젝트의 버그 수정 시 삭제
+- 검사 도구가 배포되면 자연어 점검표 축소
+- 구버전 지원 종료 시 별칭 제거
+- 해당 디렉터리 제거 시 경로별 규칙 삭제
 
-이 항목 하나만 있어도 instruction debt가 영구화되는 것을 줄일 수 있다.
+이 항목 하나만 있어도 지침 유지보수 부담이 영구화되는 것을 줄일 수 있다.
 
 ## 19.10 Feedback에서 regression으로
 
-좋은 유지보수 loop는 다음과 같다.
+좋은 유지보수 반복 과정은 다음과 같다.
 
-사용자 correction
+사용자 수정 요청
 → 실패 사례 보존
 → 원인 분류
-→ scope 또는 structure 수정
-→ eval candidate 추가
-→ regression 실행
-→ 필요하면 prose 삭제
+→ 적용 범위 또는 구조 수정
+→ 평가 대상 사례 추가
+→ 회귀 테스트 실행
+→ 필요하면 자연어 설명 삭제
 
-사용자의 correction을 곧바로 “한 줄 더 추가”로 처리하지 않는다.
+사용자의 수정 요청을 곧바로 “한 줄 더 추가”로 처리하지 않는다.
 
 ## 19.11 최종 열 가지 질문
 
@@ -144,23 +136,23 @@ Portable principle과 vendor syntax를 한 문단에 섞지 않는다.
 1. 언제 활성화되는가.
 2. 언제 활성화되면 안 되는가.
 3. 시작 전에 무엇이 참이어야 하는가.
-4. state와 authority owner는 누구인가.
+4. 상태와 권한 관리 책임자는 누구인가.
 5. 어떤 절차가 실제로 필요한가.
-6. 어떤 side effect와 권한이 있는가.
+6. 어떤 외부 상태 변화와 권한이 있는가.
 7. 무엇으로 완료를 증명하는가.
-8. 어디서 멈추고 handoff하는가.
+8. 어디서 멈추고 인계하는가.
 9. 바뀌는 사실은 어디서 다시 읽는가.
-10. 어떤 failure나 eval이 이 지침을 수정하거나 삭제하게 하는가.
+10. 어떤 실패나 평가가 이 지침을 수정하거나 삭제하게 하는가.
 
 모든 파일이 열 질문에 똑같이 답할 필요는 없다.
 
-하지만 해당 failure mode와 관련된 질문에 답이 없다면 그 지점이 리뷰 대상이다.
+하지만 해당 실패 유형과 관련된 질문에 답이 없다면 그 지점이 리뷰 대상이다.
 
 ## 19.12 이 책의 결론
 
 지침 파일 엔지니어링은 Markdown을 잘 쓰는 기술이 아니다.
 
-범위를 나누고, canonical source를 정하고, 반복 절차를 Skill로 만들고, 결정론적 규칙을 구조로 옮기고, 남은 자연어를 eval하며, 오래된 지침을 삭제하는 작업이다.
+범위를 나누고, 기준 원본을 정하고, 반복 절차를 Skill로 만들고, 결정론적 규칙을 구조로 옮기고, 남은 자연어를 평가하며, 오래된 지침을 삭제하는 작업이다.
 
 처음에는 “모델에게 무엇을 더 알려줄까”로 시작한다.
 

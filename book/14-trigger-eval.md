@@ -1,6 +1,6 @@
 # 14장. Trigger Eval
 
-Skill description이 routing interface라면 description도 테스트해야 한다.
+description이 요청에 맞는 Skill을 고르는 기준, 즉 라우팅 인터페이스(routing interface)라면 이 필드도 테스트해야 한다.
 
 “읽어 보니 충분히 명확하다”는 평가는 시작점일 뿐이다.
 
@@ -11,16 +11,16 @@ Skill description이 routing interface라면 description도 테스트해야 한�
 - 필요한 요청에서 Skill이 선택되는가.
 - 관련 없는 요청에서 선택되지 않는가.
 - 인접 Skill 중 올바른 Skill을 고르는가.
-- 아무 Skill도 필요 없을 때 abstain하는가.
-- 같은 prompt를 반복했을 때 안정적인가.
+- 아무 Skill도 필요 없을 때 선택을 보류하는가.
+- 같은 요청문을 반복했을 때 안정적인가.
 
 이 질문은 Skill 본문 품질과 분리한다.
 
-routing eval에서는 body를 최대한 고정하고 description 차이를 본다.
+Skill 선택 평가에서는 본문을 최대한 고정하고 description 차이를 본다.
 
 ## 14.2 최소 corpus
 
-처음부터 거대한 benchmark가 필요하지 않다.
+처음부터 거대한 성능 비교 평가가 필요하지 않다.
 
 최소한 여섯 종류를 둔다.
 
@@ -34,7 +34,7 @@ Skill 이름 없이 자연스럽게 요청한다.
 
 ### Noisy positive
 
-긴 맥락 안에 실제 trigger가 섞여 있다.
+긴 맥락 안에 실제 호출 조건(trigger)이 섞여 있다.
 
 ### Adjacent negative
 
@@ -48,7 +48,7 @@ Skill 이름 없이 자연스럽게 요청한다.
 
 어떤 Skill도 필요하지 않다.
 
-positive만 테스트하면 과잉 호출을 찾을 수 없다.
+호출되어야 하는 사례만 테스트하면 과잉 호출을 찾을 수 없다.
 
 ## 14.3 같은 body, 다른 description
 
@@ -57,40 +57,38 @@ description 효과를 보려면 실행 본문을 바꾸지 않는다.
 비교 예:
 
 - A0: 길고 넓은 description
-- A1: 짧은 what + when
-- A1L: 같은 의미를 유지하지만 길이만 늘린 control
-- A2: adjacent boundary를 포함
-- A3: manual-only
+- A1: 무엇을 하는지와 언제 쓰는지를 짧게 설명
+- A1L: 같은 의미를 유지하지만 길이만 늘린 대조군
+- A2: 인접 Skill과의 경계를 포함
+- A3: 명시적으로 호출할 때만 실행하는 방식
 
-이렇게 하면 길이와 broadness의 영향을 어느 정도 분리해 볼 수 있다.
+이렇게 하면 길이와 호출 범위의 넓이의 영향을 어느 정도 분리해 볼 수 있다.
 
 ## 14.4 왜 Length Control이 필요한가
 
-짧은 description이 좋은 결과를 냈다고 해서 원인이 “짧아서”라고 단정할 수 없다.
+짧은 description이 좋은 결과를 냈다고 해서 원인이 “짧아서”라고 단정할 수 없다. 짧은 버전이 동시에 더 구체적이었을 수 있기 때문이다.
 
-짧은 버전이 동시에 더 구체적이었을 수 있다.
+A1과 같은 호출 조건 의미를 유지하면서 Skill 선택에 필요 없는 설명만 늘린 A1L을 두면 길이 증가 자체의 영향을 더 잘 볼 수 있다.
 
-A1과 같은 trigger 의미를 유지하면서 routing에 필요 없는 설명만 늘린 A1L을 두면 길이 증가 자체의 영향을 더 잘 볼 수 있다.
-
-Eval은 이런 식으로 원인을 분리하는 설계가 필요하다.
+평가는 이런 식으로 원인을 분리하는 설계가 필요하다.
 
 ## 14.5 지표
 
 ### Accuracy
 
-전체 prompt 중 기대 route와 일치한 비율.
+전체 요청문 중 기대한 Skill 선택과 일치한 비율.
 
 ### Macro-F1
 
-Skill별 case 수가 다를 때 특정 Skill이 평균을 지배하지 않게 본다.
+Skill별 사례 수가 다를 때 특정 Skill이 평균을 지배하지 않게 본다.
 
 ### False Positive Rate
 
-none 또는 adjacent negative에서 잘못 호출된 비율.
+선택 없음 또는 혼동하기 쉽지만 호출하면 안 되는 사례에서 잘못 호출된 비율.
 
 ### Collision Error Rate
 
-routing pair에서 인접 Skill을 잘못 고른 비율.
+혼동하기 쉬운 Skill 쌍에서 인접 Skill을 잘못 고른 비율.
 
 ### Abstention Accuracy
 
@@ -98,59 +96,59 @@ routing pair에서 인접 Skill을 잘못 고른 비율.
 
 ### Run Consistency
 
-같은 prompt를 여러 번 실행했을 때 같은 결과가 나온 비율.
+같은 요청문을 여러 번 실행했을 때 같은 결과가 나온 비율.
 
 ## 14.6 반복 실행
 
-LLM routing은 완전히 deterministic하지 않을 수 있다.
+LLM은 같은 조건에서도 다른 Skill을 선택할 수 있다.
 
-한 번 성공한 사례를 pass로 끝내지 않는다.
+한 번 성공한 사례를 통과로 처리하고 끝내지 않는다.
 
-중요한 prompt는 여러 번 실행하고 model, host, version, date를 함께 기록한다.
+중요한 요청문은 여러 번 실행하고 모델, 실행 도구, 버전, 날짜를 함께 기록한다.
 
-한 모델의 결과를 모든 host에 일반화하지 않는다.
+한 모델의 결과를 모든 실행 도구에 일반화하지 않는다.
 
 ## 14.7 Manual-only는 별도로 평가한다
 
-manual-only Skill을 auto-trigger 정확도 경쟁에 넣으면 평가 목적이 섞인다.
+명시적으로 호출할 때만 실행하는 Skill을 자동 호출 정확도 경쟁에 넣으면 평가 목적이 섞인다.
 
-manual-only에서 확인할 것은 다음이다.
+명시적 호출 전용 Skill에서 확인할 것은 다음이다.
 
 - 자연어 요청에서 자동 호출되지 않는가.
 - 사용자가 명시적으로 호출하면 정확히 실행되는가.
-- argument contract가 지켜지는가.
-- side effect와 approval 경계가 맞는가.
+- 입력 인자의 규약이 지켜지는가.
+- 외부 상태 변화(side effect)와 승인 경계가 맞는가.
 
 ## 14.8 False Positive의 비용
 
-Skill이 호출되지 않는 false negative도 문제지만, 과잉 호출은 더 넓게 시스템을 오염시킬 수 있다.
+필요한 Skill을 호출하지 않는 누락(false negative)도 문제지만, 과잉 호출은 더 넓게 시스템을 오염시킬 수 있다.
 
-관련 없는 Skill body가 로드되고 추가 tool call, 검증, 질문, side effect가 발생할 수 있다.
+관련 없는 Skill 본문이 로드되고 추가 도구 호출, 검증, 질문, 외부 상태 변화가 발생할 수 있다.
 
-따라서 routing quality는 recall만 보지 않는다.
+따라서 Skill 선택 품질은 필요한 대상을 빠짐없이 고르는 비율(recall)만 보지 않는다.
 
 ## 14.9 Failure를 corpus로 승격한다
 
-실제 운영에서 잘못 호출된 요청은 가장 가치 있는 eval case다.
+실제 운영에서 잘못 호출된 요청은 가장 가치 있는 평가 사례다.
 
-문장을 바로 고치기 전에 해당 prompt를 corpus에 추가한다.
+문장을 바로 고치기 전에 해당 요청문을 평가 자료 모음에 추가한다.
 
-그 다음 description을 수정하고 기존 positive와 negative가 모두 유지되는지 확인한다.
+그 다음 description을 수정하고 기존 호출되어야 하는 사례와 호출되면 안 되는 사례가 모두 유지되는지 확인한다.
 
-이렇게 하면 correction이 다시 퇴행하지 않는다.
+이렇게 하면 수정한 문제가 다시 발생하는 것을 막을 수 있다.
 
 ## 14.10 Trigger-Driven Development
 
 좋은 Skill 개발 순서는 다음에 가깝다.
 
 1. 업무 책임을 정의한다.
-2. positive와 negative prompt를 만든다.
+2. 호출되어야 하는 사례와 호출되면 안 되는 사례 요청문을 만든다.
 3. description을 작성한다.
-4. routing을 측정한다.
+4. Skill 선택을 측정한다.
 5. 경계를 조정한다.
-6. body를 작성한다.
-7. output eval을 추가한다.
+6. 본문을 작성한다.
+7. 출력 평가를 추가한다.
 
-즉 Skill 개발도 test-first 사고를 적용할 수 있다.
+즉 Skill 개발도 테스트를 먼저 작성하는 사고를 적용할 수 있다.
 
-description은 문서 metadata가 아니라 **실행 전 라우터**이기 때문이다.
+description은 문서 메타데이터(metadata)가 아니라 **실행 전 라우터**이기 때문이다.

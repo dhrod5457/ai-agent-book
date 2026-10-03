@@ -1,34 +1,34 @@
 # 부록 D. Anti-pattern Catalog
 
-이 목록은 자동 점수표가 아니다. 지침 시스템을 리뷰할 때 자주 나타나는 실패를 빠르게 찾기 위한 catalog다.
+이 목록은 자동 점수표가 아니다. 지침 시스템을 리뷰할 때 자주 나타나는 실패를 빠르게 찾기 위한 목록이다.
 
 ## D.1 Root Bloat
 
 ### 증상
 
-모든 규칙과 workflow가 root CLAUDE.md 또는 AGENTS.md에 들어 있다.
+모든 규칙과 작업 절차(workflow)가 최상위 디렉터리 CLAUDE.md 또는 AGENTS.md에 들어 있다.
 
 ### 위험
 
-irrelevant instruction 노출, 충돌, context 비용.
+관련 없는 지침 노출, 충돌, 문맥 정보 비용.
 
 ### 개선
 
-root invariant만 남기고 path Rule, Skill, validator로 분리한다.
+최상위 디렉터리 불변 조건만 남기고 경로 Rule, Skill, 검사 도구로 분리한다.
 
 ## D.2 Broad Trigger
 
 ### 증상
 
-“backend 작업에 사용”, “문서 작업에 사용”처럼 domain 전체를 trigger로 잡는다.
+“백엔드 작업에 사용”, “문서 작업에 사용”처럼 분야 전체를 호출 조건(trigger)으로 잡는다.
 
 ### 위험
 
-false positive, Skill collision.
+불필요한 Skill 호출(false positive)과 Skill 사이의 선택 충돌.
 
 ### 개선
 
-실제 작업 사건을 쓰고 adjacent negative를 테스트한다.
+실제 작업 사건을 쓰고 혼동하기 쉽지만 호출하면 안 되는 사례를 테스트한다.
 
 ## D.3 Keyword Stuffing
 
@@ -38,11 +38,11 @@ description에 가능한 동의어를 모두 넣는다.
 
 ### 위험
 
-metadata bloat와 overlap.
+설명 정보인 메타데이터(metadata)가 불어나고 서로 겹침.
 
 ### 개선
 
-what + when + 핵심 경계만 남긴다.
+무엇을 하는지 + 언제 쓰는지 + 핵심 경계만 남긴다.
 
 ## D.4 No Abstention
 
@@ -52,25 +52,25 @@ what + when + 핵심 경계만 남긴다.
 
 ### 위험
 
-none 요청에서 불필요한 Skill activation.
+선택 없음 요청에서 불필요한 Skill 활성화.
 
 ### 개선
 
-none/abstention case를 eval에 포함한다.
+선택하지 않거나 선택을 보류하는 사례를 평가에 포함한다.
 
 ## D.5 State Collision
 
 ### 증상
 
-여러 Skill이 동일 workflow state를 소유한다.
+여러 Skill이 동일 작업 절차 상태를 소유한다.
 
 ### 위험
 
-validation이 mutation으로 번지고 handoff가 불명확해진다.
+검증이 상태 변경으로 번지고 인계가 불명확해진다.
 
 ### 개선
 
-requires-state와 owns-state를 분리한다.
+시작할 때 필요한 상태(requires-state)와 직접 바꿀 책임이 있는 상태(owns-state)를 분리한다.
 
 ## D.6 Side-effect Intent Collapse
 
@@ -80,31 +80,31 @@ prepare, preview, deploy가 구분되지 않는다.
 
 ### 위험
 
-사용자가 준비만 요청했는데 실제 mutation까지 실행.
+사용자가 준비만 요청했는데 실제 상태 변경까지 실행.
 
 ### 개선
 
-intent threshold, permission, approval, evidence를 분리한다.
+실행 의도를 확인하는 기준, 권한, 승인, 검증 근거를 분리한다.
 
 ## D.7 Cached CLI Manual
 
 ### 증상
 
-CLI option과 flag를 Skill에 장문 복제한다.
+CLI 옵션과 플래그를 Skill에 장문 복제한다.
 
 ### 위험
 
-실제 버전과 drift.
+실제 버전과 설명이 어긋남.
 
 ### 개선
 
-installed help, schema, current official source를 canonical로 사용한다.
+설치된 help, 데이터 구조 규칙(schema), 현재 공식 자료를 기준 원본으로 사용한다.
 
 ## D.8 Duplicated Canonical Config
 
 ### 증상
 
-design token, schema, threshold, type을 Skill에 다시 적는다.
+디자인 토큰, 데이터 구조 규칙, 기준값, 타입을 Skill에 다시 적는다.
 
 ### 위험
 
@@ -112,21 +112,21 @@ design token, schema, threshold, type을 Skill에 다시 적는다.
 
 ### 개선
 
-machine-readable source를 읽는 절차만 남긴다.
+기계가 읽을 수 있는 자료를 읽는 절차만 남긴다.
 
 ## D.9 Generic Process in Domain Skill
 
 ### 증상
 
-모든 domain Skill에 계획, clean code, 테스트, 리뷰 일반론이 반복된다.
+모든 분야 Skill에 계획, 읽고 유지보수하기 좋은 코드, 테스트, 리뷰 일반론이 반복된다.
 
 ### 위험
 
-body bloat와 불필요한 제약.
+본문 비대화와 불필요한 제약.
 
 ### 개선
 
-domain-specific surprise와 invariant만 남긴다.
+해당 분야에서 놓치기 쉬운 특수한 사항과 불변 조건만 남긴다.
 
 ## D.10 Prose-only Safety Gate
 
@@ -136,11 +136,11 @@ domain-specific surprise와 invariant만 남긴다.
 
 ### 위험
 
-다른 tool path에서 우회.
+다른 도구 경로에서 우회.
 
 ### 개선
 
-permission, Hook, deny/allow test와 결합한다.
+권한, Hook, 차단·허용 테스트와 결합한다.
 
 ## D.11 Deep Reference Chain
 
@@ -150,39 +150,39 @@ SKILL.md → A → B → C 형태로 자료가 깊게 연결된다.
 
 ### 위험
 
-retrieval overhead와 missed reference.
+추가 탐색 부담과 참고 자료 누락.
 
 ### 개선
 
-진입점에서 필요한 reference로 직접 연결한다.
+진입점에서 필요한 참고 자료로 직접 연결한다.
 
 ## D.12 Deprecated Full Copy
 
 ### 증상
 
-old Skill과 new Skill이 같은 workflow를 각각 소유한다.
+기존 Skill과 새 Skill이 같은 작업 절차를 각각 소유한다.
 
 ### 위험
 
-bugfix와 policy drift.
+버그 수정과 정책이 서로 달라짐.
 
 ### 개선
 
-old Skill은 compatibility alias로 남기고 canonical owner 하나로 위임한다.
+기존 Skill은 호환성을 위한 별칭으로 남기고 원본 관리 책임자 하나로 위임한다.
 
 ## D.13 Eval Contamination
 
 ### 증상
 
-candidate와 installed Skill이 동시에 보인다.
+평가 대상과 설치된 Skill이 동시에 보인다.
 
 ### 위험
 
-다른 Skill을 평가하고도 pass로 기록.
+다른 Skill을 평가하고도 통과로 기록.
 
 ### 개선
 
-inventory 격리와 activation source 기록.
+목록 격리와 실제로 활성화된 Skill의 출처 기록.
 
 ## D.14 Latest-Version Override
 
@@ -192,11 +192,11 @@ inventory 격리와 activation source 기록.
 
 ### 위험
 
-의도적으로 고정된 target을 깨뜨린다.
+의도적으로 고정된 대상을 깨뜨린다.
 
 ### 개선
 
-user target → project target → installed source → current official source 순으로 본다.
+사용자가 지정한 대상 → 프로젝트가 지정한 대상 → 설치된 자료 → 현재 공식 자료 순으로 본다.
 
 ## D.15 Missing Completion Bound
 
@@ -206,25 +206,25 @@ user target → project target → installed source → current official source 
 
 ### 위험
 
-search loop, over-verification, tool thrashing.
+반복 검색, 과도한 검증, 도구의 불필요한 반복 호출.
 
 ### 개선
 
-observable Done when을 둔다.
+관찰 가능한 완료 조건(Done when)을 둔다.
 
 ## D.16 Host-Tolerated Invalidity
 
 ### 증상
 
-현재 host에서 우연히 동작하는 잘못된 metadata.
+현재 실행 도구에서 우연히 동작하는 잘못된 메타데이터.
 
 ### 위험
 
-다른 host 또는 upgrade에서 실패.
+다른 실행 도구 또는 업그레이드에서 실패.
 
 ### 개선
 
-spec validation과 provider smoke test.
+규격 검증과 도구별 기본 동작 확인 테스트.
 
 ## D.17 Line-count Cargo Cult
 
@@ -234,11 +234,11 @@ spec validation과 provider smoke test.
 
 ### 위험
 
-실제 책임과 failure mode를 보지 못한다.
+실제 책임과 실패 유형을 보지 못한다.
 
 ### 개선
 
-줄 수는 refactor signal로만 사용한다.
+줄 수는 구조를 다시 살필 신호로만 사용한다.
 
 ## D.18 MUST Counter
 
@@ -252,13 +252,13 @@ MUST, NEVER 개수로 품질을 점수화한다.
 
 ### 개선
 
-semantic eval과 human review.
+의미와 행동 평가와 사람의 검토.
 
 ## D.19 LLM-as-Validator Everywhere
 
 ### 증상
 
-parse, link, schema 같은 결정론적 오류까지 LLM judge로 판정한다.
+구문 분석, 링크, 데이터 구조 규칙 같은 결정론적 오류까지 LLM 평가자로 판정한다.
 
 ### 위험
 
@@ -266,7 +266,7 @@ parse, link, schema 같은 결정론적 오류까지 LLM judge로 판정한다.
 
 ### 개선
 
-deterministic validator를 먼저 사용한다.
+같은 조건에서 같은 결과를 내는 검사 도구를 먼저 사용한다.
 
 ## D.20 Instruction Accumulation
 
@@ -276,8 +276,8 @@ deterministic validator를 먼저 사용한다.
 
 ### 위험
 
-instruction debt.
+지침이 쌓이면서 생기는 유지보수 부담.
 
 ### 개선
 
-correction → regression case → scope/structure 개선 → removal audit의 순환을 만든다.
+수정 요청 → 회귀 테스트 사례 → 적용 범위와 구조 개선 → 삭제 여부 점검의 순환을 만든다.
