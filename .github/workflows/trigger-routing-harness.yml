@@ -6,6 +6,8 @@ on:
       - "research/experiments/trigger-routing/v0.1/**"
       - "research/instruction-files/18-trigger-eval-corpus.md"
   push:
+    branches:
+      - "main"
     paths:
       - "research/experiments/trigger-routing/v0.1/**"
       - "research/instruction-files/18-trigger-eval-corpus.md"
