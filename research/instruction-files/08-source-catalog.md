@@ -446,11 +446,27 @@ https://arxiv.org/abs/2307.03172
   - 링크 수집 backlog가 아니라 자체 실측 backlog
   - [20-evidence-gap-matrix.md](20-evidence-gap-matrix.md)의 experiment gap으로 관리
 
-### 낮은 우선순위
+### 전체 link-only source 감사 완료
 
-- OpenAI `PLANS.md` multi-hour workflow
-  - standing instruction과 execution document 분리의 보조 사례로는 유효
-  - 동일 원칙의 공식/실제 사례가 이미 충분해 별도 심층 조사 우선순위는 낮음
+- [32-link-only-source-audit.md](32-link-only-source-audit.md)에서 01~31 연구 문서와 README의 source를 전수 재검토
+- 35개 corpus raw link, commit history link, 유명/vendor repository link는 후속 분석이 존재하므로 미조사로 보지 않음
+- OpenAI `PLANS.md`, current Codex AGENTS hierarchy, Gemini extension guidance, Copilot Code Review를 추가 상세 조사
+- 핵심 source 중 URL만 남아 있어 추가 조사가 필요한 항목은 현재 없음
+
+### Historical / current 구분
+
+- OpenAI `Using PLANS.md for multi-hour problem solving`
+  - 현재 페이지가 Archived로 표시됨
+  - 현행 Codex syntax 근거가 아니라 standing trigger → procedure → living task document 분리의 역사적/recipe 사례로만 사용
+
+### 이후 source 추가 기준
+
+새 링크는 다음 중 하나를 만족할 때만 우선 수집한다.
+
+- 기존 taxonomy에 없는 authoring failure
+- 현재 evidence gap을 직접 줄이는 실측 결과
+- 공식 runtime semantics 변경
+- instruction deletion/refactor의 새로운 before/after evidence
 
 
 ## I. 실제 변경 이력 / Instruction Debt 사례
