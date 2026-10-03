@@ -453,3 +453,32 @@ skillhub 사례는 강하지만 특정 repository/model의 결과다.
 4. validator spec을 실제 예제 config + expected diagnostics fixture로 보강
 
 실측이 재개되기 전까지는 위 네 작업의 가치가 추가 corpus 수집보다 높다.
+
+
+## 2026-10-03 제품별 문서 조사 공백 재분류
+
+다음 항목은 더 이상 "추가 링크 수집" 공백으로 보지 않는다.
+
+- Claude Code prompt-audit: built-in `/doctor prompt-audit` / `/checkup prompt-audit`와 `/claude-api prompt-audit` 상세 조사 완료
+- Cursor Rule validation: 공식 structural contract와 runtime visibility 확인, 공식 standalone CI validator는 현재 문서에서 확인하지 못함
+- Codex skill-creator: `openai/skills`와 `openai/codex` 공식 source 차이까지 조사
+- Gemini Skill best practices: discovery/precedence/silent-skip/validation helper까지 조사
+- GitHub Copilot path-specific precedence: GitHub.com/IDE와 CLI의 merge/precedence semantics 차이 확인
+- nested AGENTS 및 공개 repository corpus: 기존 16/21/27번 자료로 충분히 보강됨
+
+상세:
+
+- [31-product-edge-source-deep-dive.md](31-product-edge-source-deep-dive.md)
+
+따라서 현재 큰 gap은 제품 문서 수집이 아니라 **controlled experiment**다.
+
+우선순위는 기존과 동일하게 유지한다.
+
+1. cross-host routing
+2. root monolith vs scoped instruction
+3. description boundary
+4. model-upgrade instruction diet
+5. reference depth
+6. prose vs Hook enforcement
+
+새 링크가 생겨도 위 실측 공백을 직접 줄이지 않으면 corpus 확장 우선순위를 낮춘다.
