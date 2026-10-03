@@ -21,6 +21,86 @@ Calibration prompt:
 
 ---
 
+# 1.1 공통 harness preflight
+
+host 실행 전에 아래 두 명령이 통과해야 한다.
+
+```bash
+cd research/experiments/trigger-routing/v0.1
+python3 harness.py validate
+python3 -m unittest -v test_harness.py
+```
+
+`validate`는 다음을 확인한다.
+
+- 4개 description variant 존재
+- 각 variant에 feature/bugfix/refactor/review description 존재
+- calibration 20개와 `split.json` calibration이 동일
+- 전체 split ID가 80개이고 중복 없음
+- `split.json`이 고정한 corpus/pilot/variant Git blob SHA와 현재 파일이 동일
+- `results-template.csv` header가 scorer contract와 동일
+
+실험 fixture가 바뀌었는데 blob SHA가 달라지면 기존 결과와 섞지 않는다.
+
+# 1.2 Materialize
+
+`harness.py materialize`는 네 Skill의 body를 완전히 동일하게 유지하고 description만 선택한 variant로 바꾼다.
+
+예:
+
+```bash
+python3 harness.py materialize \
+  --variant A2_boundary_aware \
+  --host claude \
+  --output /tmp/trigger-routing-a2-claude
+```
+
+기본 project Skill root:
+
+| Host | Path |
+| --- | --- |
+| generic | `.agents/skills` |
+| Claude Code | `.claude/skills` |
+| Codex | `.codex/skills` |
+| Cursor | `.cursor/skills` |
+| Gemini CLI | `.gemini/skills` |
+| GitHub Copilot CLI | `.github/skills` |
+
+실행 시점의 host 문서가 다른 경로를 요구하면:
+
+```bash
+--skills-dir <relative/path>
+```
+
+로 override하고 결과 notes에 그 경로를 기록한다.
+
+# 1.3 Score
+
+20-case 1회 calibration 결과를 `results-template.csv` schema로 저장한다.
+
+```bash
+python3 harness.py score \
+  --results results.csv \
+  --json-out score.json \
+  --md-out score.md
+```
+
+현재 scorer가 계산하는 항목:
+
+- observable rate
+- observable run 기준 accuracy
+- macro-F1
+- none abstention accuracy
+- none false-positive rate
+- routing-pair collision error rate
+- 반복 실행 시 run consistency
+- confusion matrix
+- label별 precision/recall/F1
+
+observable하지 않은 run을 억지로 실패나 none으로 바꾸지 않는다.
+
+---
+
 # 2. Routing-only Skill Body
 
 이 실험은 Skill이 선택된 뒤 실제 코딩 성능을 측정하지 않는다.
