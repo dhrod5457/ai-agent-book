@@ -410,18 +410,47 @@ https://arxiv.org/abs/2307.03172
 - 긴 context에서 중요한 정보의 위치에 따라 활용 성능 저하 가능
 - "context가 크면 전부 넣어도 된다"는 가정의 배경 반례
 
-## H. 추가 수집할 자료
+## H. 추가 조사 상태
 
-다음은 책 집필 전 추가 조사 가치가 있다.
+2026-10-03 재점검 결과, 링크 조사로 닫을 수 있는 항목은 상세 조사했다.
 
-- Claude Code `/doctor prompt-audit` 실제 출력 사례
-- Cursor rule lint/validation 방법
+### 상세 조사 완료
+
+- Claude Code prompt-audit
+  - built-in `/doctor prompt-audit` / `/checkup prompt-audit`
+  - `/claude-api prompt-audit`
+  - model-relative audit, provenance, report + proposed diff contract 확인
+- Cursor Rule lint/validation
+  - 공식 `.mdc` structural contract와 runtime visibility 확인
+  - 공식 standalone lint/JSON Schema/CI validator는 현재 문서에서 확인하지 못함
+  - repository-owned structural validator 영역으로 분류
 - Codex skill-creator 최신 원문
-- Gemini Skill best practices 최신 원문
-- Copilot path-specific instruction의 precedence edge case
-- AGENTS.md 공개 표준의 nested semantics와 제품별 차이
-- 실제 대규모 repository의 CLAUDE.md/AGENTS.md 사례 20~30개
+  - `openai/skills`와 `openai/codex` 공식 source를 대조
+  - authoring guidance drift 자체를 canonical-source freshness 사례로 기록
+- Gemini Skill best practices
+  - discovery, progressive disclosure, degree of freedom, script ergonomics, silent-skip 조건, precedence 확인
+- Copilot path-specific instruction precedence
+  - GitHub.com/IDE의 precedence와 Copilot CLI의 merge semantics가 다름을 확인
+- AGENTS.md nested semantics와 제품별 차이
+  - 16/21번 문서와 Copilot surface 조사로 보강
+- 실제 공개 repository instruction 사례
+  - 35개 corpus 수집 및 10축 재분류 완료
+
+상세 결과:
+
+- [31-product-edge-source-deep-dive.md](31-product-edge-source-deep-dive.md)
+
+### 문서 조사로 닫지 않는 항목
+
 - 지침 파일 변경 전후 실제 coding task eval 데이터
+  - 링크 수집 backlog가 아니라 자체 실측 backlog
+  - [20-evidence-gap-matrix.md](20-evidence-gap-matrix.md)의 experiment gap으로 관리
+
+### 낮은 우선순위
+
+- OpenAI `PLANS.md` multi-hour workflow
+  - standing instruction과 execution document 분리의 보조 사례로는 유효
+  - 동일 원칙의 공식/실제 사례가 이미 충분해 별도 심층 조사 우선순위는 낮음
 
 
 ## I. 실제 변경 이력 / Instruction Debt 사례
