@@ -28,7 +28,7 @@ host 실행 전에 아래 두 명령이 통과해야 한다.
 ```bash
 cd research/experiments/trigger-routing/v0.1
 python3 harness.py validate
-python3 -m unittest -v test_harness.py
+python3 -m unittest -v test_harness.py test_phase_a_runner.py
 ```
 
 `validate`는 다음을 확인한다.
@@ -98,6 +98,67 @@ python3 harness.py score \
 - label별 precision/recall/F1
 
 observable하지 않은 run을 억지로 실패나 none으로 바꾸지 않는다.
+
+---
+
+# 1.4 Phase A runner
+
+Claude Code, Codex, Gemini CLI는 공통 runner로 calibration을 실행할 수 있다.
+
+먼저 설치/버전만 확인한다.
+
+```bash
+python3 phase_a_runner.py --host claude --out /tmp/phase-a-claude --preflight-only
+python3 phase_a_runner.py --host codex --out /tmp/phase-a-codex --preflight-only
+python3 phase_a_runner.py --host gemini --out /tmp/phase-a-gemini --preflight-only
+```
+
+한 host에서 4개 variant × 20 calibration case를 1회 실행:
+
+```bash
+python3 phase_a_runner.py \
+  --host claude \
+  --model <exact-model-id> \
+  --runs 1 \
+  --out runs/claude-calibration
+```
+
+smoke case만 먼저 실행하려면 `--case`를 반복한다.
+
+```bash
+python3 phase_a_runner.py \
+  --host gemini \
+  --model <exact-model-id> \
+  --variant A1_concise \
+  --case EP-F01 \
+  --case EP-B01 \
+  --case NO-04 \
+  --runs 1 \
+  --out runs/gemini-smoke
+```
+
+runner는 각 prompt마다 별도 workspace를 materialize하고 새 CLI process를 시작한다.
+
+안전 경계:
+
+- 실제 사용자 repository를 실험 대상으로 사용하지 않음
+- synthetic 빈 git workspace만 사용
+- Claude는 `--permission-mode plan`
+- Gemini는 `--approval-mode plan`
+- Codex는 `--full-auto`를 사용하지 않음
+- Skill body 자체도 파일 수정/명령 실행을 금지
+- stdout/stderr/command/result row를 raw artifact로 보존
+
+관측 규칙:
+
+- Gemini: `activate_skill(name)` event 우선
+- 공통 fallback: 정확한 `SKILL_ACTIVATED:<name>` sentinel
+- Claude/Codex에서 sentinel도 native event도 없으면 `unobservable`
+- Gemini는 정상 종료된 complete stream에 `activate_skill`이 없으면 `none`을 관측 가능 상태로 기록
+
+`--model`에는 가능하면 alias가 아니라 정확한 model ID를 사용한다.
+
+현재 runner는 host CLI 인증을 설정하거나 설치하지 않는다. 사용자의 기존 로그인/credential을 그대로 사용한다.
 
 ---
 
